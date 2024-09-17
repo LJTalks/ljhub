@@ -98,3 +98,7 @@ The system differentiates between services (mentoring, editing) and digital prod
 Link to my Github [Project Board](https://github.com/users/LJTalks/projects/11)
 
 Link to my [Ideas Board (Miro)](https://miro.com/app/board/uXjVKukyfAU=/)
+
+Entity Relationship Diagram
+
+![Lucid Chart](static/images/readme/erd.png)
