@@ -9,13 +9,25 @@ class Product(models.Model):
     description = models.TextField()
     # Default price (and tier two)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    category = models.CharField(max_length=100)
+    stock = models.IntegerField(default=0)
     tier_one_price = models.DecimalField(
         max_digits=10, decimal_places=2, default=0.00)
     tier_one_limit = models.IntegerField(
         null=True, blank=True, default=0)  # No of units at price 1
-    category = models.CharField(max_length=100)
-    stock = models.IntegerField(default=0)
     limit_one_per_customer = models.BooleanField(default=False)
+    low_stock_threshold = models.IntegerField(
+        default=10)  # Admin can set this value
+    # low-stock-alert-sent will need to be reset to False when stock is replenished
+    low_stock_alert_sent = models.BooleanField(default=False)
+
+    # Check if current stock is greaterthan low stock threshold, if so, flag is reset to false
+
+    def save(self, *args, **kwargs):
+        # If the stock is replenished, reset low_stock_alert_sent to false
+        if self.stock > self.low_stock_threshold:
+            self.low_stock_alert_sent = False
+        super().save(*args, **kwargs)  # Call the parent class save method
 
     def __str__(self):
         return self.title

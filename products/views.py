@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 from products.models import Product
+from django.core.mail import send_mail
 
 # Products views
 
@@ -18,34 +19,49 @@ class HomePage(TemplateView):
 def purchase_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
-    if product.stock >= product.tier_one_limit:
-        total_price = 0  # Tier One price (free)
-    else:
-        remaining_at_tier_one = max(product.tier_one_limit - product.stock, 0)
-        price_tier_one = remaining_at_tier_one * product.tier_one_price
-        price_tier_two = (quantity_ordered -
-                          remaining_at_tier_one) * product.price
-        total_price = price_tier_one + price_tier_two
-
-    # Check if product is limited to one per customer
-    if product.limit_one_per_customer and quantity_ordered > 1:
-        return HttpResponse("This product is limited to one per customer.")
-
     # Quantity will be sent via POST form
     quantity_ordered = int(request.POST.get('quantity', 1))  # Default to one
 
-    # Check if stock is available
+    # Check if stock is available/
     if product.stock >= quantity_ordered:
-        # Decrease stock by number bought/ordered
+        # Decrease stock by number bought/ordered (Before checking for alerts or pricing)
         product.stock -= quantity_ordered
         product.save()
 
-        # Tiered pricing (e.g. first 100 are free, remaining are £4.99)
-        if product.stock >= 100:
-            total_price = 0  # Free for the first 100
+        # Check for low stock and send an email if below threshold
+        if product.stock <= product.low_stock_threshold and not product.low_stock_alert_sent:
+            send_mail(
+                'Low Stock Alert',
+                f'The Product {product.title} is running low on stock.',
+                'admin@test.com',
+                ['admin@test.com']
+            )
+            product.low_stock_alert_sent = True  # Mark that alert has been sent
+            product.save()
+
+        # Tiered pricing (e.g. first 100 are free, remaining at £4.99)
+        if product.stock >= product.tier_one_limit:
+            total_price = 0  # Tier One price (free)
         else:
-            total_price = (100 - product.stock) * \
-                4.99  # £4.99 for items beyond 100
+            remaining_at_tier_one = max(
+                product.tier_one_limit - product.stock, 0)
+            price_tier_one = remaining_at_tier_one * product.tier_one_price
+            price_tier_two = (quantity_ordered -
+                              remaining_at_tier_one) * product.price
+            total_price = price_tier_one + price_tier_two
+
+        # Check if product is limited to one per customer
+        if product.limit_one_per_customer and quantity_ordered > 1:
+            return HttpResponse("This product is limited to one per customer.")
+
+        # Pricing changed to use new remaing stock calc
+        # Can clear this if testing works
+        # # Tiered pricing (e.g. first 100 are free, remaining are £4.99)
+        # if product.stock >= 100:
+        #     total_price = 0  # Free for the first 100
+        # else:
+        #     total_price = (100 - product.stock) * \
+        #         4.99  # £4.99 for items beyond 100
 
         # Purchase handling logic
         return HttpResponse(f"Successfully purchased {product.title}!")
