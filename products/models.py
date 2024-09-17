@@ -8,9 +8,11 @@ class Product(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     # Default price (and tier two)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    tier_one_price = models.DecimalField(max_digits=10, decimal_places=2)
-    tier_one_limit = models.IntegerField(default=100)  # No of units at price 1
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    tier_one_price = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)
+    tier_one_limit = models.IntegerField(
+        null=True, blank=True, default=0)  # No of units at price 1
     category = models.CharField(max_length=100)
     stock = models.IntegerField(default=0)
     limit_one_per_customer = models.BooleanField(default=False)
