@@ -10,6 +10,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.CharField(max_length=100)
     stock = models.IntegerField(default=0)
+    limit_one_per_customer = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
