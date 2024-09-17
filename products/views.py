@@ -18,6 +18,15 @@ class HomePage(TemplateView):
 def purchase_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
+    if product.stock >= product.tier_one_limit:
+        total_price = 0  # Tier One price (free)
+    else:
+        remaining_at_tier_one = max(product.tier_one_limit - product.stock, 0)
+        price_tier_one = remaining_at_tier_one * product.tier_one_price
+        price_tier_two = (quantity_ordered -
+                          remaining_at_tier_one) * product.price
+        total_price = price_tier_one + price_tier_two
+
     # Check if product is limited to one per customer
     if product.limit_one_per_customer and quantity_ordered > 1:
         return HttpResponse("This product is limited to one per customer.")
