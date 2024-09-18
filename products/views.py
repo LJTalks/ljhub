@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from products.models import Product
+from products.models import Product, Purchase
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
 
 # Products views
 
@@ -15,6 +16,7 @@ class HomePage(TemplateView):
     template_name = 'index.html'
 
 
+@login_required  # Ensure the user is logged in before they can purchase
 # View to handle product purchase
 def purchase_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -54,16 +56,25 @@ def purchase_product(request, product_id):
         if product.limit_one_per_customer and quantity_ordered > 1:
             return HttpResponse("This product is limited to one per customer.")
 
-        # Pricing changed to use new remaing stock calc
-        # Can clear this if testing works
-        # # Tiered pricing (e.g. first 100 are free, remaining are £4.99)
-        # if product.stock >= 100:
-        #     total_price = 0  # Free for the first 100
-        # else:
-        #     total_price = (100 - product.stock) * \
-        #         4.99  # £4.99 for items beyond 100
+        # Record the purchase in the Purchase model
+        Purchase.objects.create(
+            product=product,
+            user=request.user,  # current logged in user
+            quantity=quantity_ordered,
+            price_paid=total_price,
+            status=1  # Mark as "Completed"
+        )
 
-        # Purchase handling logic
         return HttpResponse(f"Successfully purchased {product.title}!")
     else:
         return HttpResponse("Sorry, there is not enough stock available.")
+
+
+@login_required
+def purchase_history(request):
+    # Query for the logged-in user's purchases
+    purchases = Purchase.objects.filter(
+        user=request.user).order_by('-purchase-date')
+
+    # Render the purchase history template with the purchase data
+    return render(request, 'purchase_history.html', {'purchases': purchases})

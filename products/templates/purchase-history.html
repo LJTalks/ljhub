@@ -1,0 +1,14 @@
+<h1>Purchase History</h1>
+
+{% if purchases %}
+<ul>
+    {% for purchase in purchases %}
+    <li>
+        {{ purchase.product.title }} - {{ purchase.quantity }} purchased at £{{ purchase.price_paid }} on
+        {{ purchase.purchase_date }} ({{ purchase.get_status_display }})
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You have not made any purchases yet. Visit our store!</p>
+{% endif %}
