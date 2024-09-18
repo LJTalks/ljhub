@@ -34,17 +34,21 @@ class Product(models.Model):
 
 
 # Commented out purchases fo testing as it's not yet defined
-# class Purchases(models.Model):
-#     STATUS_CHOICES = [
-#         (0, 'Pending'),
-#         (1, 'Completed'),
-#         (2, 'Refunded'),
-#     ]
-#     user = models.ForeignKey(
-#         User, on_delete=models.CASCADE, related_name="purchases")
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     purchase_date = models.DateTimeField(auto_now_add=True)
-#     status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+class Purchase(models.Model):
+    STATUS_CHOICES = [
+        (0, 'Pending'),
+        (1, 'Completed'),
+        (2, 'Refunded'),
+    ]
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="purchases")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    purchase_date = models.DateTimeField(auto_now_add=True)
+    # capturing price_paid is important as product price may subsequently change,
+    # user may have recived an offer or discount
+    price_paid = models.DecimalField(
+        max_digits=10, decimal_places=2, default=0.00)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
 
-#     def __str__(self):
-#         return f"{self.user.username} - {self.product.title} ({self.get_status_display()})"
+    def __str__(self):
+        return f"{self.user.username} - {self.product.title} ({self.get_status_display()})"
