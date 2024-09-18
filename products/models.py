@@ -16,12 +16,12 @@ class Product(models.Model):
     tier_one_limit = models.IntegerField(
         null=True, blank=True, default=0)  # No of units at price 1
     limit_one_per_customer = models.BooleanField(default=False)
-    low_stock_threshold = models.IntegerField(
+    low_stock_threshold = models.PositiveIntegerField(
         default=10)  # Admin can set this value
     # low-stock-alert-sent will need to be reset to False when stock is replenished
     low_stock_alert_sent = models.BooleanField(default=False)
 
-    # Check if current stock is greaterthan low stock threshold, if so, flag is reset to false
+    # Check if current stock is greater than low stock threshold, if so, flag is reset to false
 
     def save(self, *args, **kwargs):
         # If the stock is replenished, reset low_stock_alert_sent to false
@@ -43,6 +43,7 @@ class Purchase(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="purchases")
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
     purchase_date = models.DateTimeField(auto_now_add=True)
     # capturing price_paid is important as product price may subsequently change,
     # user may have recived an offer or discount
