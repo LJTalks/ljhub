@@ -1,8 +1,38 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from .models import Post, Comment
+from .forms import CommentForm
 
-# Create your views here.
+# View for listing all blog posts
 
 
-def blog_home(request):
-    return HttpResponse("Hello, it's the blog home!")
+def blog_list(request):
+    posts = Post.objects.filter(status=1).order_by(
+        '-created_on')  # Only show published posts
+    return render(request, 'blog/blog-list.html', {'posts': posts})
+
+# View for displaying a single blog post and its comments
+
+
+# def blog_post(request, slug):
+#     post = get_object_or_404(Post, slug=slug)
+#     # # comments = post.comments.filter(post=post)
+#     # new_comment = None
+
+    # # Check if comment form is submitted
+    # if request.method == 'POST':
+    # Use lowercase `comment_form`
+    #     comment_form = CommentForm(data=request.POST)
+    #     if comment_form.is_valid():
+    #         new_comment = comment_form.save(commit=False)
+    #         new_comment.user = request.user
+    #         new_comment.post = post
+    #         new_comment.save()
+    # else:
+    #     comment_form = CommentForm()
+
+    # return render(request, 'blog/blog-post.html', {
+    #     'post': post,
+    #     # 'comments': comments,  # Use lowercase `comments`
+    #     # 'new_comment': new_comment,  # Correct typo from `mew_comment`
+    #     # 'comment_form': comment_form  # Use lowercase `comment_form`
+    # })

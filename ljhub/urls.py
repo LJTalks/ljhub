@@ -21,6 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),  # Products app
     path('blog/', include('blog.urls')),  # Blog app
-    # Home page points to products for now
+    # products Home page points to products for now
     path('', include('products.urls'), name='home'),
 ]

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>This is the bog-post.html</p>
+<p>These will be individual blog posts</p>
+<h1>{{ post.title }}</h1>
+<p>By {{ post.author }} on {{ post.created_on }}</p>
+<p>{{ post.content }}</p>
+
+<hr>
+<h3>Comments</h3>
+{% for comment in post.comments.all %}
+<div>
+    <strong>{{ comment.user.username }}</strong> said on {{ comment.created_at }}:
+    <p>{{ comment.content }}</p>
+</div>
+{% endfor %}
+<hr>
+
+<h3>Add a Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Add Comment</button>
+</form>
+
+<p>This is the bog-post.html</p>
+{% endblock %}
