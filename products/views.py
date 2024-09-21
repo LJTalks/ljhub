@@ -6,8 +6,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 
 # Products views
-
-
+# Product Details View
 class HomePage(TemplateView):
     """
     Displays Home Page (Swap home page to the blog view when it exists)
@@ -15,9 +14,16 @@ class HomePage(TemplateView):
     """
     template_name = 'index.html'
 
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    context = {
+        'product': product
+    }
+    return render(request, 'products/product_detail.html', context)
 
-@login_required  # Ensure the user is logged in before they can purchase
+
 # View to handle product purchase
+@login_required  # Ensure the user is logged in before they can purchase
 def purchase_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>This is the product-detail.html</p>
+<p>These will be individual product details</p>
+
+<!-- Display the individual blog post -->
+<h1>{{ product.title }}</h1>
+<p> Description: {{ product.description }} </p>
+<p>Price: {{ products.price }}</p>
+<p>Category: {{ products.category }} </p> <!-- if not blank -->
+<hr>
+
+<h3>If you like this, you might like this </h3> <!-- could we add an automated related product look up? -->
+<div>
+    <!-- Add reviews model? -->
+    <strong>{{ comment.user.username }}</strong> said on {{ comment.created_at }}:
+    <p>{{ comment.content }}</p>
+</div>
+{% endfor %}
+<hr>
+
+<h3>Add a Review</h3>
+<!-- Add reviews models? 
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Add Comment</button>
+</form> -->
+
+<p>This is the product-detail.html</p>
+{% endblock %}
