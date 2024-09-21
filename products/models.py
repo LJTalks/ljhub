@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 class Product(models.Model):
     title = models.CharField(max_length=200)
+    slug = models.CharField(max_length=200, unique=True, blank=True, null=True)
     description = models.TextField()
     # Default price (and tier two)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -24,16 +25,18 @@ class Product(models.Model):
     # Check if current stock is greater than low stock threshold, if so, flag is reset to false
 
     def save(self, *args, **kwargs):
+        if not self.slug:  # Check if slug is not set
+            self.slug = slugify(self.title)  # Generate slug from name
         # If the stock is replenished, reset low_stock_alert_sent to false
         if self.stock > self.low_stock_threshold:
             self.low_stock_alert_sent = False
         super().save(*args, **kwargs)  # Call the parent class save method
 
     def __str__(self):
-        return self.title
+        return self.title  # Use name for string representation
 
 
-# Commented out purchases fo testing as it's not yet defined
+# Purchases model
 class Purchase(models.Model):
     STATUS_CHOICES = [
         (0, 'Pending'),

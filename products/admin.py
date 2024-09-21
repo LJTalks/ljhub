@@ -4,11 +4,12 @@ from .models import Product, Purchase
 
 # Product Admin View
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'price', 'stock',
+    list_display = ('title', 'slug', 'price', 'stock',
                     'tier_one_limit', 'low_stock_threshold')
     search_fields = ('title',)
     list_filter = ('tier_one_limit', 'low_stock_threshold')
     ordering = ('title',)
+    prepopulated_fields = {'slug': ('title',)} # Auto Generates slug from title
 
 
 # Purchase Admin View
