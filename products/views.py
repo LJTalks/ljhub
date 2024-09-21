@@ -21,7 +21,6 @@ def product_detail(request, slug):
     }
     return render(request, 'products/product_detail.html', context)
 
-
 # View to handle product purchase
 @login_required  # Ensure the user is logged in before they can purchase
 def purchase_product(request, product_id):
