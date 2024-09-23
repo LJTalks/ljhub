@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blog/', include('blog.urls')),  # Blog app
     path('products/', include('products.urls')),  # Products app
+    path('summernote/', include('django_summernote.urls')),
     path('', include('products.urls')), #Home page points to products for now
 
     # products Home page points to products for now

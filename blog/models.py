@@ -30,6 +30,12 @@ class Comment(models.Model):
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    STATUS_CHOICES = [
+        (0, 'Pending'),
+        (1, 'Approved')
+    ]
+    
 
     def __str__(self):
         return f'Comment by {self.user.username} on {self.post.title}'
