@@ -28,7 +28,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '8000-ljtalks-ljhub-at6xms91as2.ws.codeinstitute-ide.net', 'ljhub-b444eee3873a.herokuapp.com']
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'products',
     'blog',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
