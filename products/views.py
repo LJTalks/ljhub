@@ -13,7 +13,11 @@ class HomePage(TemplateView):
     This will be a summary of products available
     """
     template_name = 'index.html'
-    
+
+
+def home(request):
+    return render(request, 'products/home.html')
+
 # Product List View for potential customers
 def product_list(request):
     products = Product.objects.filter(status=1) # did we give our products a status?)

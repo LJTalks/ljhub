@@ -8,7 +8,7 @@ from .forms import CommentForm
 def blog_list(request):
     posts = Post.objects.filter(status=1).order_by(
         '-created_on')  # Only show published posts
-    return render(request, 'blog/blog-list.html', {'posts': posts})
+    return render(request, 'blog/blog_list.html', {'posts': posts})
 
 
 # View for displaying a single blog post and its comments
@@ -28,7 +28,7 @@ def blog_post(request, slug):
     else:
         comment_form = CommentForm()
 
-    return render(request, 'blog/blog-post.html', {
+    return render(request, 'blog/blog_post.html', {
         'post': post,
         'comments': comments,
         'new_comment': new_comment,

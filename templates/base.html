@@ -14,10 +14,45 @@
 </head>
 
 <body>
-    <p>This is the base header</p>
-    {% block content %}
-    <!-- Content Goes here -->
-    {% endblock content %}
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a href="{% url 'home' %}" class="navbar-brand">LJHub</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="{% url 'blog_list' %}" class="nav-link">Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'product_list' %}" class="nav-link">Products</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'user_profile' %}" class="nav-link">Profile</a>
+                </li>
+                <li class="nav-tem">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="nav-link">Log out</a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="nav-link">Log In</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        {% block content %}
+        <p>This is for testing/set up. It's the base.html in root templates dir and all other views will link to it</p>
+        <!-- Content Goes here -->
+        {% endblock content %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <p>This is the base footer</p>
 </body>
 
