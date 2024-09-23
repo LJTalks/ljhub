@@ -2,62 +2,70 @@
 
 ## Purpose:
 
-**LJHub** is a centralized platform where users can explore services, book appointments, and engage with blog content.
-
-The platform aims to provide a seamless experience for users seeking professional services such as mentoring or video editing while offering access to digital products like PDFs, online courses, and webinars. The site also maintains a personal blog where the admin can share updates, business insights, and resources.
+**LJHub** LJHub is a centralized platform where users can access digital products, engage with blog content, and stay informed through dynamic updates. The platform offers a seamless experience for individuals looking to explore a variety of digital resources like PDFs, online courses, and webinars. Additionally, it provides a personal blog where the admin shares insights, resources, and the business journey.
 
 ## Target Audience:
 
-**Freelancers and Small Business Owners**: Individuals who want to monetize their passions and hobbies, establish their own business, or work as freelancers.
+**Freelancers and Small Business Owners**: Individuals seeking to monetize their passions, establish their own business, or enhance their freelancing capabilities.
 
-**Digital Nomads**: People who are looking for the freedom to work from anywhere and live a flexible lifestyle.
+**Digital Nomads**: People looking for the flexibility to work from anywhere and live a lifestyle of freedom.
 
-**Aspiring Entrepreneurs**: People who dream of leaving the 9-5 lifestyle, but don’t know how to get started with their own venture.
+**Aspiring Entrepreneurs**: Individuals dreaming of leaving the 9-5 lifestyle and starting their own venture but unsure where to begin.
 
-**Aspiring developers and learners** looking for insights through blog posts and mentoring.
+**Aspiring developers and learners** Those looking for insights and learning opportunities through blog posts and digital resources.
 
-**Individuals Who Want to be Heard**: People looking to get their voice out there, build their personal brand, and share their story or expertise online.
+**Individuals Seeking to be Heard**: People aiming to build their personal brand, share their story or expertise, and connect with like-minded communities.
 
 **Potential clients exploring professional services** like website building or management, software solutions, video editing, social media management, and more.
 
-**People Just Like Me**: I’ve been on this journey myself, and now I want to mentor others and show them how they can achieve the same freedom and success.
+**People Just Like Me**: Those on a similar journey to mine, wanting guidance on achieving freedom and success through personal and professional growth.
 
 ## Key Features:
 
 **User Registration and Login**:
 Users can create an account, log in, and manage their profiles.
 
+Access to purchase history and upcoming bookings for digital products.
+
+**Product Management**:
+
+**View and Purchase Products**: Users can browse and buy digital products such as PDFs, online courses, and webinars.
+
+**Access to Purchased Content**: Once a product is purchased, users can view and download their digital content.
+
+**Automated Stock Management**: Digital products have stock levels, which update automatically upon purchase.
+
+Initial units may be free, with a tiered pricing structure applied afterward.
+
+**Blog**:
+A dynamic blog where the admin posts articles on freelancing, coding, business insights, and more.
+
+Logged-in users can leave comments on blog posts, fostering community engagement.
+
+**Admin Dashboard**:
+Admins can manage digital products, blog posts, and user activity.
+
+Tracking of product stock, purchase history, and user engagement.
+
+**User Notifications**:
+Automated notifications for product purchases and blog updates.
+
+Email and/or SMS reminders for special offers and new content releases.
+
+**Tracking Purchases**:
+Users can view their purchase history, including details of digital products and any downloadable content.
+
+The system supports a clear distinction between different types of digital products (PDFs, online courses, etc.).
+
+## Future Features (Planned)
+
 **Booking System**:
-View services and available booking slots with integrated calendar support.
+View available services like Mentoring, and available booking slots with integrated calendar support.
+
 Receive booking confirmations and reminders.
 
 **Service Management**:
 View detailed information about available services and book appointments.
-
-**Blog**:
-A dynamic blog where the admin can post content and users can leave comments.
-
-**Admin Dashboard**:
-Admin users can manage services, bookings, and blog posts.
-
-**User Notifications**:
-Automated notifications for bookings, reminders, and cancellations.
-
-## Key Features:
-
-**User Registration and Login**:
-
-Users can create an account, log in, and manage their profiles, bookings, and purchases.
-
-**Service and Product Management**:
-
-Users can view and book services such as mentoring sessions, video editing, or social
-
-**media management**.
-
-Users can purchase and access digital products like PDFs, online courses, and webinars.
-
-Once a service is booked or a product is purchased, users can view their upcoming bookings and access purchased digital content.
 
 **Booking System**:
 
@@ -68,32 +76,6 @@ Bookings are confirmed automatically once the user completes required steps (e.g
 Users cannot cancel or edit bookings themselves; any changes must be requested by contacting the service provider directly.
 
 The system prevents double-booking of the same time slot.
-
-**Blog**:
-
-A dynamic blog where the admin can post articles on freelancing, coding, business insights, and more.
-
-Logged-in users can leave comments on blog posts, and comments can be moderated.
-
-**Admin Dashboard**:
-
-Admin users can manage services, bookings, digital products, and blog posts.
-
-Admins can track user activity, handle cancellations, and ensure the system runs smoothly.
-
-**User Notifications**:
-
-Automated notifications for booking confirmations, cancellations, reminders, and product access.
-
-Email and/or SMS reminders can be sent to users before upcoming bookings, if they opt in.
-
-**Tracking Purchases and Bookings**:
-
-Users can view both their upcoming bookings and their history of purchased digital products.
-
-The system differentiates between services (mentoring, editing) and digital products (PDFs, online courses, etc.).
-
-## Development
 
 Link to my Github [Project Board](https://github.com/users/LJTalks/projects/11)
 
