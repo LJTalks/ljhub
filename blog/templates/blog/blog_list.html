@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Blog Posts</h1>
-<p>This is the blog_list.html</p>
-<p>It's where the blog posts will be listed</p>
-<ul>
-    {% for post in posts %}
-    <li>
-        <a href="{% url 'blog_post' post.slug %}">{{ post.title }}</a>
-        <p>{{ post.content|truncatewords:30 }}</p> <!-- Show a preview of the content -->
-    </li>
-    {% endfor %}
-</ul>
-{% endblock %}
+<div>
+    <div>
+        <h1>Blog Posts</h1>
+        <div>
+            <ul>
+                {% for post in posts %}
+                <li>
+                    <a href="{% url 'blog_post' post.slug %}">{{ post.title }}</a>
+                    <p>{{ post.content|truncatewords:30|safe }}</p> <!-- Show a preview of the content -->
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endblock %}

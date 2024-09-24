@@ -7,7 +7,7 @@
 <!-- Display the individual blog post -->
 <h1>{{ post.title }}</h1>
 <p>By {{ post.author }} on {{ post.created_on }}</p>
-<p>{{ post.content }}</p>
+<p>{{ post.content|safe }}</p>
 
 <hr>
 <h3>Comments</h3>
