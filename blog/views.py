@@ -6,8 +6,10 @@ from .forms import CommentForm
 
 # View for listing all blog posts
 def blog_list(request):
+    # Fetch all published blog posts and order them by creation date, newest first
     posts = Post.objects.filter(status=1).order_by(
         '-created_on')  # Only show published posts
+    # Pass the posts to the template
     return render(request, 'blog/blog_list.html', {'posts': posts})
 
 

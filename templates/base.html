@@ -1,4 +1,6 @@
+{% url 'home' as home_url %}
 {% load static %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %} LJ Hub {% endblock title %}</title>
+    <title>{% block title %} LJ Hub Base html Title{% endblock title %}</title>
     <!-- Bootstrap CSS CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custome CSS -->
@@ -29,7 +31,7 @@
                 <li class="nav-item">
                     <a href="{% url 'product_list' %}" class="nav-link">Products</a>
                 </li>
-                <li class="nav-tem">
+                <li class="nav-item">
                 </li>
             </ul>
         </div>

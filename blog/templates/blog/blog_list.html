@@ -1,8 +1,10 @@
 {% extends "base.html" %}
-{% load static %}
+
+{% block title %}
+LJ Hub Blog List Title
+{% endblock title %}
 
 {% block content %}
-
 <!-- blog_list.html content starts here -->
 <div class="container-fluid">
     <div class="row">
@@ -10,7 +12,7 @@
         <!-- Blog Entries Column -->
         <div class="col-12 mt-3 left">
             <div class="row">
-                {% for post in blog_list %}
+                {% for post in posts %}
                 <div class="col-md-4">
                     <div class="card mb-4">
                         <div class="card-body">
@@ -19,7 +21,7 @@
                                 <img class="card-img-top" src="{% static 'images/default.jpg' %}"
                                     alt="placeholder image">
                                 {% else %}
-                                <img class="card-img-top" src=" {{ post.featured_image.url }}" alt="{{ post.title }}">
+                                <img class="card-img-top" src="{{ post.featured_image.url }}" alt="{{ post.title }}">
                                 {% endif %}
                                 <div class="image-flash">
                                     <p class="author">Author: {{ post.author }}</p>
@@ -31,7 +33,7 @@
                             </a>
 
                             <hr>
-                            <p class="card-text text-muted h6">{{ post.created_on}}
+                            <p class="card-text text-muted h6">{{ post.created_on }}
                             </p>
                         </div>
                     </div>
@@ -58,11 +60,9 @@
     </nav>
     {% endif %}
 </div>
-
-<!-- index.html content ends here -->
+{% endblock content %}
+<!-- blog_list.html content ends here -->
 
 {% block copyright %}
 Copyright 2024 LJ Talks
 {% endblock copyright %}
-
-{% endblock %}

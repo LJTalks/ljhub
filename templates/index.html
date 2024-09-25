@@ -1,19 +1,7 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Django-Setup</title>
-    <link rel="stylesheet" href="{% static 'css/style.css'
-%}">
-</head>
-
-<body>
-    <h1>Hello Django From main templates!</h1>
-    <p>I think this is a temp page just for testing and set up</p>
-    <p>It lives in the root templates dir (so you know where you are)</p>
-</body>
-
-</html>
+{% block content %}
+<h1>Hello Django From main templates!</h1>
+<p>I think this is a temp page just for testing and set up</p>
+<p>It lives in the root templates dir (so you know where you are)</p>
+{% endblock content %}
