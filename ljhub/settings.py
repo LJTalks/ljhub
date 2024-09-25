@@ -37,19 +37,23 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django_summernote',
-    'cloudinary_storage',
-    'cloudinary',
+    'django.contrib.admin', # Admin panel
+    'django.contrib.auth', # Authentication system
+    'django.contrib.contenttypes', # Content types framework
+    'django.contrib.sessions', # Session management
+    'django.contrib.messages', # Messaging framework
+    'django.contrib.staticfiles', # Statics; should be before apps that manage static files
+    'cloudinary_storage', # This goes immediately after django.contrib.staticfiles as it overrides the default static file storage
+    'django.contrib.sites',  # Why was this missing? Can go anywhere. # Required for managing multiple sites and for django-allauth integration
+    'cloudinary', # Image management. Should be after cloudinary_storage
+    'django_summernote', # Rich text editor for admin
+    'blog', # My custom apps come after django then third-party apps
     'products',
-    'blog',
     'user_profile',
 ]
+
+# Site framework ID - required for django.contrib.sites (added this when I discovered contrib.sites missing from installed apps in this file)
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
