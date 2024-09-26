@@ -1,30 +1,94 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
 
 {% block content %}
-<p>This is the blog_post.html</p>
-<p>These will be individual blog posts</p>
 
-<!-- Display the individual blog post -->
-<h1>{{ post.title }}</h1>
-<p>By {{ post.author }} on {{ post.created_on }}</p>
-<p>{{ post.content|safe }}</p>
-
-<hr>
-<h3>Comments</h3>
-{% for comment in post.comments.all %}
-<div>
-    <strong>{{ comment.user.username }}</strong> said on {{ comment.created_at }}:
-    <p>{{ comment.content }}</p>
+<div class="masthead">
+    <div class="container">
+        <div class="row g-0">
+            <div class="col-md-6 masthead-text">
+                <h1 class="post-title">{{ post.title }}</h1>
+                <p class="post-subtitle">By {{ post.author }} on {{ post.created_on }}</p>
+            </div>
+            <div class="d-none d-md-block col-md-6 masthead-image">
+                {% if "placeholder" in post.featured_image.url %}
+                <img src="{% static 'images/default.jpg' %}" class="scale" alt="placeholder">
+                {% else %}
+                <img src="{{ post.featured_img.url }}" class="scale" alt="{{ post.title }}">
+                {% endif %}
+            </div>
+        </div>
+    </div>
 </div>
-{% endfor %}
-<hr>
 
-<h3>Add a Comment</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Add Comment</button>
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col card-mb-4 mt-3 left top">
+            <div class="card-body">
+                <!-- Display the individual blog post, safe tag for summernote field input -->
+                <p class="card-text">{{ post.content | safe }}</p>
+            </div>
+        </div>
+    </div>
+    <!-- Displaying count of comments -->
+    <div class="row">
+        <div class="col-12">
+            <strong class="text-secondary">
+                <i class="far fa-comments"></i> {{comment_count }}
+            </strong>
+        </div>
+        <div class="col-12">
+            <hr>
+        </div>
+    </div>
+    <!-- Can we display no of views or likes? -->
+    <!-- Display Comments-->
+    <div class="row">
+        <div class="col-md-8 card mb-4 mt-3">
+            <h3>Comments</h3>
+            <div class="card-body">
+                <!-- For lopp to iterate through each comment in comments. Should the all be in there? -->
+                {% for comment in post.comments.all %}
+                <div class="p-2 comments">
+                    {% if not comment.approved and comment.author == user %}
+                    faded{% elif not comment.approved %} d-none{% endif %}
+                    <p class="font-weight-bold">
+                        {{comment.author}}
+                    </p>
+                </div>
 
-<p>This is the bog-post.html</p>
-{% endblock %}
+            </div>
+
+        </div>
+    </div>
+
+    <div>
+        <strong>{{ comment.user.username }}</strong> said on {{ comment.created_at }}:
+        <p>{{ comment.content }}</p>
+    </div>
+    {% endfor %}
+    <hr>
+
+    <h3>Add a Comment</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Add Comment</button>
+    </form>
+
+    <!-- Pagination for the individual blog post -->
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li>
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV</a>
+        </li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li>
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT &raquo;</a>
+        </li>
+        {% endif %}
+    </ul>
+
+    {% endblock %}

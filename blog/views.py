@@ -15,9 +15,9 @@ def blog_list(request):
 
 # View for displaying a single blog post and its comments
 def blog_post(request, slug):
-    post = get_object_or_404(Post, slug=slug)   # Fetch a single post by slug
-    comments = post.comments.filter(post=post)  # Fetch comments for the post
-    new_comment = None
+    queryset = Post.objects.filter(status=1) # Filter to show only published posts
+    post = get_object_or_404(queryset, slug=slug)   # Fetch a single post by slug
+    comments = post.comments.filter(papproved=True).count()  # Fetch and count comments for the post
 
     # Check if comment form is submitted
     if request.method == 'POST':
@@ -27,11 +27,17 @@ def blog_post(request, slug):
             new_comment.user = request.user
             new_comment.post = post
             new_comment.save()
+            messages.add_message(
+                request, messages.SUCCESS,
+                'Comment submitted and awaiting approval'
+            )
     else:
         comment_form = CommentForm()
 
-    return render(request, 'blog/blog_post.html', {
-        'post': post,
+    return render(
+        request,
+        'blog/blog_post.html',
+        {'post': post,
         'comments': comments,
         'new_comment': new_comment,
         'comment_form': comment_form
