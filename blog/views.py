@@ -17,16 +17,19 @@ def blog_list(request):
 def blog_post(request, slug):
     queryset = Post.objects.filter(status=1) # Filter to show only published posts
     post = get_object_or_404(queryset, slug=slug)   # Fetch a single post by slug
-    comments = post.comments.filter(papproved=True).count()  # Fetch and count comments for the post
+    comments = post.comments.filter(status=1).count()  # Fetch and count comments for the post
+    
+    # Initialize 'comment' variable (to avoid the return comment:comment error )
+    comment = None
 
     # Check if comment form is submitted
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.user = request.user
-            new_comment.post = post
-            new_comment.save()
+            comment = comment_form.save(commit=False)
+            comment.user = request.user
+            comment.post = post
+            comment.save()
             messages.add_message(
                 request, messages.SUCCESS,
                 'Comment submitted and awaiting approval'
@@ -37,8 +40,9 @@ def blog_post(request, slug):
     return render(
         request,
         'blog/blog_post.html',
-        {'post': post,
-        'comments': comments,
-        'new_comment': new_comment,
-        'comment_form': comment_form
+        {
+            'post': post,
+            'comments': comments,
+            'comment': comment,
+            'comment_form': comment_form
     })
