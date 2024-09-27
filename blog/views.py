@@ -7,18 +7,19 @@ from .forms import CommentForm # we will use crispy forms
 
 #reverse is for generating URLs , similar to in templates {% url 'view' arg1 arg2 %}
 
-# Function based View for listing all blog posts
-def blog_list(request):
-    # Fetch all published blog posts and order them by creation date, newest first
-    posts = Post.objects.filter(status=1).order_by(
-        '-created_on')  # Only show published posts
-    # Pass the posts to the template
-    return render(request, 'blog/blog_list.html', {'posts': posts})
+# # Function based View for listing all blog posts
+# def blog_list(request):
+#     # Fetch all published blog posts and order them by creation date, newest first
+#     posts = Post.objects.filter(status=1).order_by(
+#         '-created_on')  # Only show published posts
+#     # Pass the posts to the template
+#     return render(request, 'blog/blog_list.html', {'posts': posts})
 
-# Class based views for listing all  the blog posts
-class PostList(generic.ListView):
+# Class based view for listing all the blog posts # (used in walkthrough)
+class BlogList(generic.ListView):
     queryset = Post.objects.filter(status=1).order_by("-created_on")
-    template_name = "blog/index.html"
+    template_name = "blog/blog_list.html"
+    context_object_name = 'posts' #ensures consistency in template context naming
     paginate_by = 6
     
     
