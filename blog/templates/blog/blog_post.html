@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<!-- Display the blog section with the post title and author -->
 <div class="masthead">
     <div class="container">
         <div class="row g-0">
@@ -13,6 +14,7 @@
             </div>
             <div class="d-none d-md-block col-md-6 masthead-image">
                 {% if "placeholder" in post.featured_image.url %}
+                <!-- Display a default image if there is no featured image -->
                 <img src="{% static 'images/default.jpg' %}" class="scale" alt="placeholder">
                 {% else %}
                 <img src="{{ post.featured_img.url }}" class="scale" alt="{{ post.title }}">
@@ -35,7 +37,7 @@
     <div class="row">
         <div class="col-12">
             <strong class="text-secondary">
-                <i class="far fa-comments"></i> {{comment_count }}
+                <i class="far fa-comments"></i> {{comments.count }} Comments
             </strong>
         </div>
         <div class="col-12">
@@ -47,35 +49,58 @@
     <div class="row">
         <div class="col-md-8 card mb-4 mt-3">
             <h3>Comments</h3>
+            {% if comments.exists %}
+            <!-- Check if there are any comments -->
             <div class="card-body">
-                <!-- For lopp to iterate through each comment in comments. Should the all be in there? -->
-                {% for comment in post.comments.all %}
-                <div class="p-2 comments">
-                    {% if not comment.approved and comment.author == user %}
-                    faded{% elif not comment.approved %} d-none{% endif %}
+                <!-- Loop through each comment and display it -->
+                <!-- For loop to iterate through each comment in comments. Should they all be in there? -->
+                <!-- {% for comment in post.comments.all %} -->
+                {% for comment in comments %}
+                <div class="p-2 comments"> {% if comment.status == 0 and comment.commenter == user %}faded{% endif %}>
+                    <!-- Show the comment if it's approved or it's pending and belongs to the logged-in user -->
+                    <!-- The comment should only available in this html page if it's approved, or if it's the same logged in user they'll see it in lighter text CHECK THIS!!! -->
+                    <!-- Adding this temporarily to test  -->
+                    {{ comment }}
+                    <!-- this looks like a dupe? -->
+                    <!-- {% if not comment.approved and comment.commenter == user %} Chat gpt changed this to -->
+                    <!-- {% if comment.status == 1 or (comment.status == 0 and comment.commenter == user) %} -->
                     <p class="font-weight-bold">
-                        {{comment.author}}
+                        {{comment.commenter.username}}
                     </p>
+                    <p>{{ comment.comment }}</p>
+                    <!-- I added the endif cause error in browser -->
+                    {% endif %}
                 </div>
-
+                {% endfor %}
             </div>
-
+            {% else %}
+            <!-- Message displayed if there are no comments yet -->
+            <p>No comments yet. Be the first to comment!</p>
+            {% endif %}
         </div>
     </div>
 
     <div>
-        <strong>{{ comment.user.username }}</strong> said on {{ comment.created_at }}:
+        <strong>{{ comment.commenter.username }}</strong> said on {{ comment.created_at }}:
         <p>{{ comment.content }}</p>
     </div>
-    {% endfor %}
     <hr>
-
-    <h3>Add a Comment</h3>
-    <form method="post">
-        {% csrf_token %}
-        {{ comment_form.as_p }}
-        <button type="submit">Add Comment</button>
-    </form>
+    <!-- Comment Submission Section -->
+    <div>
+        <h3>Add a Comment</h3>
+        {% if user.is_authenticated %}
+        <!-- Form to add a new comment, visible only to logged-in users -->
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Add Comment</button>
+        </form>
+        {% else %}
+        <!-- Prompt for users to log in or sign up before commenting -->
+        <p>You must be <a href="{% url 'login' %}">logged in</a> to add a comment. Don't have an account? <a
+                href="{% url 'signup' %}">Sign up here</a>.</p>
+        {% endif %}
+    </div>
 
     <!-- Pagination for the individual blog post -->
     <ul class="pagination justify-content-center">

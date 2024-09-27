@@ -40,13 +40,14 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='comments')
-    author = models.ForeignKey(
+    # Renamed author for comments, to commenter to avoid confusion with post author
+    commenter = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="commenter")
-    content = models.TextField()
+    comment = models.TextField() # Renamed content to comment for clarity
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=COMMENT_STATUS_CHOICES, default=0)
     
 
     def __str__(self):
-        return f'Comment by {self.user.username} on {self.post.title}'
+        return f'Comment by {self.commenter.username} on {self.post.title}' # Updated to reflect 'commenter'
