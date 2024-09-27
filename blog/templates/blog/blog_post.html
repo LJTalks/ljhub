@@ -17,7 +17,7 @@
                 <!-- Display a default image if there is no featured image -->
                 <img src="{% static 'images/default.jpg' %}" class="scale" alt="placeholder">
                 {% else %}
-                <img src="{{ post.featured_img.url }}" class="scale" alt="{{ post.title }}">
+                <img src="{{ post.featured_img.url }}" class="scale" alt="{{ post.title }}" />
                 {% endif %}
             </div>
         </div>
@@ -49,27 +49,32 @@
     <div class="row">
         <div class="col-md-8 card mb-4 mt-3">
             <h3>Comments</h3>
-            {% if comments.exists %}
+            {% if comments %}
             <!-- Check if there are any comments -->
             <div class="card-body">
                 <!-- Loop through each comment and display it -->
                 <!-- For loop to iterate through each comment in comments. Should they all be in there? -->
-                <!-- {% for comment in post.comments.all %} -->
+                <!-- for comment in post.comments.all  -->
                 {% for comment in comments %}
-                <div class="p-2 comments"> {% if comment.status == 0 and comment.commenter == user %}faded{% endif %}>
+                <div
+                    class="p-2 comments {% if comment.status == 0 and comment.commenter == user %} faded{% elif not comment.approved %} d-none{% endif %}">
                     <!-- Show the comment if it's approved or it's pending and belongs to the logged-in user -->
                     <!-- The comment should only available in this html page if it's approved, or if it's the same logged in user they'll see it in lighter text CHECK THIS!!! -->
-                    <!-- Adding this temporarily to test  -->
-                    {{ comment }}
-                    <!-- this looks like a dupe? -->
-                    <!-- {% if not comment.approved and comment.commenter == user %} Chat gpt changed this to -->
-                    <!-- {% if comment.status == 1 or (comment.status == 0 and comment.commenter == user) %} -->
                     <p class="font-weight-bold">
-                        {{comment.commenter.username}}
+                        {{ comment.commenter }}
+                        <span class="font-weight-normal"> {{ comment.created_at }} </span>
                     </p>
-                    <p>{{ comment.comment }}</p>
-                    <!-- I added the endif cause error in browser -->
-                    {% endif %}
+                    <div id="comment {{ comment.id }}">
+                        {{ comment.comment | linebreaks }}
+                        {% if not comment.approved and comment.commenter == user %}
+                        <p class="approval">This comment is awaiting approval</p>
+                        {% endif %}
+                        {% if user.is_authenticated and comment.commenter %}
+                        <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete</button>
+                        <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit</button>
+                        {% endif %}
+                    </div>
+                    <!-- For loop ends here -->
                 </div>
                 {% endfor %}
             </div>
@@ -80,11 +85,7 @@
         </div>
     </div>
 
-    <div>
-        <strong>{{ comment.commenter.username }}</strong> said on {{ comment.created_at }}:
-        <p>{{ comment.content }}</p>
-    </div>
-    <hr>
+    <hr />
     <!-- Comment Submission Section -->
     <div>
         <h3>Add a Comment</h3>
