@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% load static %}
 
 
@@ -15,7 +16,7 @@
             <div class="d-none d-md-block col-md-6 masthead-image">
                 {% if "placeholder" in post.featured_image.url %}
                 <!-- Display a default image if there is no featured image -->
-                <img src="{% static 'images/default.jpg' %}" class="scale" alt="placeholder">
+                <img src="{% static 'images/blogplaceholder.webp' %}" class="scale" alt="placeholder">
                 {% else %}
                 <img src="{{ post.featured_img.url }}" class="scale" alt="{{ post.title }}" />
                 {% endif %}
@@ -87,14 +88,15 @@
 
     <hr />
     <!-- Comment Submission Section -->
+    <!-- This will throw errors as authentication needs adding -->
     <div>
         <h3>Add a Comment</h3>
         {% if user.is_authenticated %}
         <!-- Form to add a new comment, visible only to logged-in users -->
-        <form method="post">
-            {% csrf_token %}
-            {{ comment_form.as_p }}
-            <button type="submit">Add Comment</button>
+        <form id="commentForm" method="post" style="margin-top: 1.3em">
+            <!-- don't forget to import crispy forms -->
+            {{ comment_form | crispy }} {csrf_token %}
+            <button id="sumbitButton" type="submit" class="btn btn-signup btn-lg">Add comment</button>
         </form>
         {% else %}
         <!-- Prompt for users to log in or sign up before commenting -->
@@ -102,19 +104,39 @@
                 href="{% url 'signup' %}">Sign up here</a>.</p>
         {% endif %}
     </div>
-
-    <!-- Pagination for the individual blog post -->
-    <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
-        <li>
-            <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV</a>
-        </li>
-        {% endif %}
-        {% if page_obj.has_next %}
-        <li>
-            <a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT &raquo;</a>
-        </li>
-        {% endif %}
-    </ul>
-
+    <div>
+        <!-- Delete confirmation modal -->
+        <div class="modal fade" id="deleteModal" tabindex="1-" aria-labelledby="deleteModalLabel" aria-hidden="True">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">Are you sure you want to delete your comment? This action can not be undone.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button">Close</button>
+                        <a href="#" class="btn btn-danger" id="deleteConfirm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <!-- Pagination for the individual blog post -->
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV</a>
+            </li>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
     {% endblock %}
+    <!-- Comment Form JS Script goes here  -->
