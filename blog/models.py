@@ -31,9 +31,9 @@ class Post(models.Model):
 
     class Meta:
         ordering = ['-created_on']
-
+        
     def __str__(self):
-        return f"{self.title} | written by {self.author}"
+        return f"{self.title} | {self.author}"
 
 
 # Adding Comment Model
@@ -47,7 +47,10 @@ class Comment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.IntegerField(choices=COMMENT_STATUS_CHOICES, default=0)
-    
+
+    @property
+    def comment_excerpt(self):
+        return self.comment[:50] + '...' if len(self.comment) > 50 else self.comment    
 
     def __str__(self):
         return f'Comment by {self.commenter.username} on {self.post.title}' # Updated to reflect 'commenter'

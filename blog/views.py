@@ -3,7 +3,7 @@ from django.contrib import messages # to update users on their comments and log 
 from django.views import generic # to use CBV's
 from django.http import HttpResponse
 from .models import Post, Comment
-from .forms import CommentForm # we will use crispy forms
+from .forms import CommentForm # we use crispy forms
 
 #reverse is for generating URLs , similar to in templates {% url 'view' arg1 arg2 %}
 
@@ -22,13 +22,14 @@ class BlogList(generic.ListView):
     context_object_name = 'posts' #ensures consistency in template context naming
     paginate_by = 6
     
-    
 
 # View for displaying a single blog post and its comments
 def blog_post(request, slug):
     queryset = Post.objects.filter(status=1) # Filter to show only published posts TO ALL
     post = get_object_or_404(queryset, slug=slug)   # Fetch a single post by slug
-    comments = post.comments.filter(status=1)  # Fetch approved comments for the post (add count  .count()) 
+    
+    comments = post.comments.all().order_by("created_at")
+    comment_count = post.comments.filter(status=1).count()  # Fetch approved comments for the post and add count 
     
     # Initialize 'comment' variable (to avoid the return comment:comment error )
     # comment = None # do we need this now?
@@ -42,12 +43,13 @@ def blog_post(request, slug):
             comment.commenter = request.user # auto assign the logged in user
             comment.post = post # The blog post the new comment refers to 
             comment.save()
+            
             # Send a sucess message to the user if their comment is valid
             messages.add_message(
                 request, messages.SUCCESS,
                 'Comment submitted and awaiting approval'
             )
-            return redirect(reverse('blog_post', slug=post.slug)) # Return to the blog post
+            # return redirect(reverse('blog_post', slug=post.slug)) # Return to the blog post
         
     else:
         comment_form = CommentForm() # if the comment is not valid we should send message? 

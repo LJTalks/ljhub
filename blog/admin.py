@@ -21,7 +21,7 @@ class PostAdmin(SummernoteModelAdmin):
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     # commenter and post title/author should be auto filled?
-    list_display = ('post', 'commenter', 'status', 'created_at', 'updated_at')
+    list_display = ('post', 'comment_excerpt', 'commenter', 'status', 'created_at', 'updated_at')
     search_fields = ['commenter__username', 'comment'] # Changed from 'content' to reflect model changes
     list_filter = ('post', 'created_at', 'status')
     actions = ['approve_comments', 'delete_comments'] # Approve and delete from admin list view
