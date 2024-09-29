@@ -28,7 +28,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     '8000-ljtalks-ljhub-at6xms91as2.ws.codeinstitute-ide.net', 'ljhub-b444eee3873a.herokuapp.com']
@@ -43,17 +43,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions', # Session management
     'django.contrib.messages', # Messaging framework
     'django.contrib.staticfiles', # Statics; should be before apps that manage static files
-    'cloudinary_storage', # This goes immediately after django.contrib.staticfiles as it overrides the default static file storage
-    'django.contrib.sites',  # Why was this missing? Can go anywhere. # Required for managing multiple sites and for django-allauth integration
+    'django.contrib.sites', # Can go anywhere. # Required for managing multiple sites and for django-allauth integration
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'cloudinary_storage', # This goes after django and allauth files as it overrides the default static file storage
     'cloudinary', # Image management. Should be after cloudinary_storage
+    'crispy_forms',
+    'crispy_bootstrap5',
     'django_summernote', # Rich text editor for admin
     'blog', # My custom apps come after django then third-party apps
     'products',
     'user_profile',
 ]
 
-# Site framework ID - required for django.contrib.sites (added this when I discovered contrib.sites missing from installed apps in this file)
-SITE_ID = 1
+CRISPY_ALLOWED_TEMPLATE_PACKs = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+# Site framework ID - required for django.contrib.sites
+SITE_ID = 1 # So Django can handle multiple sites from one database
+LOGIN_REDIRECT_URL = '/' # returns user to home page after logging in
+LOGOUT_REDIRECT_URL = '/' # returns user to home page after logging out
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -63,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware', # Adds additional functionality to the projects account user authentication
 ]
 
 ROOT_URLCONF = 'ljhub.urls'
@@ -123,6 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+ACCOUNT_EMAIL_VERIFICATION = 'none' # Not using email verification in this project.
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
