@@ -57,8 +57,7 @@
                 <!-- For loop to iterate through each comment in comments. Should they all be in there? -->
                 <!-- for comment in post.comments.all  -->
                 {% for comment in comments %}
-                <div
-                    class="p-2 comments {% if not comment.approved and comment.commenter == user %} faded{% elif not comment.approved %} d-none{% endif %}">
+                <div class="p-2 comments {% if comment.status == 0 and comment.commenter == user %} faded{% elif comment.status == 0 and comment.commenter != user %} d-none{% endif %}"
                     <!-- IF comment is pending and the commenter is the logged in user -->
                     <!-- show faded comment with waiting for approval message -->
                     <!-- IF comment is pending (do we need to add and commenter is NOT user?) do not show -->
@@ -70,7 +69,7 @@
                     <div id="comment{{ comment.id }}">{{ comment.comment | linebreaks }}
                     </div>
                     <!-- (part of the first IF - show faded comment with waiting for approval message -->
-                    {% if not comment.approved and comment.commenter == user %}
+                    {% if comment.status == 0 and comment.commenter == user %}
                     <!-- Show this message to the commenter if post is not approved -->
                     <p class="approval">This comment is awaiting approval</p>
                     {% endif %}

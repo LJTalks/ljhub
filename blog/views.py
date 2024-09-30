@@ -61,6 +61,7 @@ def blog_post(request, slug):
         {
             'post': post,
             'comments': comments,
-            # 'comment': comment, # should this be ommitted now? Chat gpt said safe to delete this...
-            'comment_form': comment_form
-    })
+            'comment_count': comment_count,
+            'comment_form': comment_form,
+    },
+    )
