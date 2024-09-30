@@ -11,6 +11,7 @@
     /* Darker shade for contrasts */
     --highlight-color: #FFD900;
     /* Bright yellow for attention-grabbing elements */
+    --highlight-text-color: #000000;
     --link-color: #FF0077;
     /* Pink for links to match the accent */
     --approval-color: #FFD900;
@@ -71,6 +72,7 @@ body {
     min-width: 30%;
     left: -2px;
     background-color: var(--highlight-color);
+    color: var(--highlight-text-color);
 }
 
 .scale {
@@ -139,7 +141,7 @@ body {
 .btn-signup,
 .btn-edit {
     background-color: var(--highlight-color);
-    color: var(--light-bg-color);
+    color: var(--highlight-text-color);
 }
 
 .btn-signup:hover,

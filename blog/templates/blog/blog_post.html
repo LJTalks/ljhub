@@ -50,96 +50,100 @@
     <div class="row">
         <div class="col-md-8 card mb-4 mt-3">
             <h3>Comments</h3>
-            {% if comments %}
             <!-- Check if there are any comments -->
+            {% if comments %}
             <div class="card-body">
                 <!-- Loop through each comment and display it -->
                 <!-- For loop to iterate through each comment in comments. Should they all be in there? -->
                 <!-- for comment in post.comments.all  -->
                 {% for comment in comments %}
                 <div
-                    class="p-2 comments {% if comment.status == 0 and comment.commenter == user %} faded{% elif not comment.approved %} d-none{% endif %}">
-                    <!-- Show the comment if it's approved or it's pending and belongs to the logged-in user -->
-                    <!-- The comment should only available in this html page if it's approved, or if it's the same logged in user they'll see it in lighter text CHECK THIS!!! -->
+                    class="p-2 comments {% if not comment.approved and comment.commenter == user %} faded{% elif not comment.approved %} d-none{% endif %}">
+                    <!-- IF comment is pending and the commenter is the logged in user -->
+                    <!-- show faded comment with waiting for approval message -->
+                    <!-- IF comment is pending (do we need to add and commenter is NOT user?) do not show -->
+                    <!-- ELSE show the comment -->
                     <p class="font-weight-bold">
                         {{ comment.commenter }}
                         <span class="font-weight-normal"> {{ comment.created_at }} </span>
                     </p>
-                    <div id="comment {{ comment.id }}">
-                        {{ comment.comment | linebreaks }}
-                        {% if not comment.approved and comment.commenter == user %}
-                        <p class="approval">This comment is awaiting approval</p>
-                        {% endif %}
-                        {% if user.is_authenticated and comment.commenter %}
-                        <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete</button>
-                        <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit</button>
-                        {% endif %}
+                    <div id="comment{{ comment.id }}">{{ comment.comment | linebreaks }}
                     </div>
-                    <!-- For loop ends here -->
+                    <!-- (part of the first IF - show faded comment with waiting for approval message -->
+                    {% if not comment.approved and comment.commenter == user %}
+                    <!-- Show this message to the commenter if post is not approved -->
+                    <p class="approval">This comment is awaiting approval</p>
+                    {% endif %}
+                    <!-- If the approved comment belongs to logged in user show edit and delete buttons -->
+                    {% if user.is_authenticated and comment.commenter == user %}
+                    <button class="btn btn-delete" comment_id="{{ comment.id }}">Delete</button>
+                    <button class="btn btn-edit" comment_id="{{ comment.id }}">Edit</button>
+                    {% endif %}
                 </div>
-                {% endfor %}
+                <!-- For loop ends here -->
             </div>
-            {% else %}
-            <!-- Message displayed if there are no comments yet -->
-            <p>No comments yet. Be the first to comment!</p>
-            {% endif %}
+            {% endfor %}
+        </div>
+        {% else %}
+        <!-- Message displayed if there are no comments yet -->
+        <p>No comments yet. Be the first to comment!</p>
+        {% endif %}
+    </div>
+</div>
+
+<hr />
+<!-- Comment Submission Section -->
+<!-- This will throw errors as authentication needs adding -->
+<div class="cold-md-4 card mb-4 mt-3">
+    <div class="card-body">
+        <h3>Add a Comment</h3>
+        {% if user.is_authenticated %}
+        <!-- Form to add a new comment, visible only to logged-in users -->
+        <form id="commentForm" method="post" style="margin-top: 1.3em">
+            <!-- We're using crispy forms -->
+            {{ comment_form | crispy }} {% csrf_token %}
+            <button id="sumbitButton" type="submit" class="btn btn-signup btn-lg">Add comment</button>
+        </form>
+        {% else %}
+        <!-- Prompt for users to log in or sign up before commenting -->
+        <p>You must be <a href="{% url 'account_login' %}">logged in</a> to add a comment. Don't have an account? <a
+                href="{% url 'account_signup' %}">Sign up here</a></p>
+        {% endif %}
+    </div>
+    <div>
+        <!-- Delete confirmation modal -->
+        <div class="modal fade" id="deleteModal" tabindex="1-" aria-labelledby="deleteModalLabel" aria-hidden="True">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
+                        <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">Are you sure you want to delete your comment? This action can not be
+                        undone.
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button">Close</button>
+                        <a href="#" class="btn btn-danger" id="deleteConfirm">Delete</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <hr />
-    <!-- Comment Submission Section -->
-    <!-- This will throw errors as authentication needs adding -->
-    <div class="cold-md-4 card mb-4 mt-3">
-        <div class="card-body">
-            <h3>Add a Comment</h3>
-            {% if user.is_authenticated %}
-            <!-- Form to add a new comment, visible only to logged-in users -->
-            <form id="commentForm" method="post" style="margin-top: 1.3em">
-                <!-- We're using crispy forms -->
-                {{ comment_form | crispy }} {% csrf_token %}
-                <button id="sumbitButton" type="submit" class="btn btn-signup btn-lg">Add comment</button>
-            </form>
-            {% else %}
-            <!-- Prompt for users to log in or sign up before commenting -->
-            <p>You must be <a href="{% url 'account_login' %}">logged in</a> to add a comment. Don't have an account? <a
-                    href="{% url 'account_signup' %}">Sign up here</a></p>
+    <div>
+        <!-- Pagination for the individual blog post -->
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV</a>
+            </li>
             {% endif %}
-        </div>
-        <div>
-            <!-- Delete confirmation modal -->
-            <div class="modal fade" id="deleteModal" tabindex="1-" aria-labelledby="deleteModalLabel"
-                aria-hidden="True">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteModalLabel">Delete comment?</h5>
-                            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">Are you sure you want to delete your comment? This action can not be
-                            undone.
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button">Close</button>
-                            <a href="#" class="btn btn-danger" id="deleteConfirm">Delete</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div>
-            <!-- Pagination for the individual blog post -->
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                <li>
-                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; PREV</a>
-                </li>
-                {% endif %}
-                {% if page_obj.has_next %}
-                <li>
-                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT &raquo;</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-        {% endblock %}
-        <!-- Comment Form JS Script goes here  -->
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}" class="page-link">NEXT &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+    {% endblock %}
+    <!-- Comment Form JS Script goes here  -->
