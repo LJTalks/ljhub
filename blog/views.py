@@ -27,9 +27,12 @@ class BlogList(generic.ListView):
 def blog_post(request, slug):
     queryset = Post.objects.filter(status=1) # Filter to show only published posts TO ALL
     post = get_object_or_404(queryset, slug=slug)   # Fetch a single post by slug
+    post.views += 1
+    post.save()
     
     comments = post.comments.all().order_by("created_at")
     comment_count = post.comments.filter(status=1).count()  # Fetch approved comments for the post and add count 
+    
     
     # Initialize 'comment' variable (to avoid the return comment:comment error )
     # comment = None # do we need this now?

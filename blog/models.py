@@ -28,6 +28,7 @@ class Post(models.Model):
     status = models.IntegerField(choices=POST_STATUS_CHOICES, default=0)
     updated_on= models.DateTimeField(auto_now=True)
     excerpt = models.TextField(blank=True)
+    views = models.IntegerField(default=0) # New field for tracking views
 
     class Meta:
         ordering = ['-created_on']

@@ -34,18 +34,25 @@
             </div>
         </div>
     </div>
-    <!-- Displaying count of comments -->
+    <!-- Displaying count of post views -->
     <div class="row">
-        <div class="col-12">
+        <div class="col-6 text-left">
             <strong class="text-secondary">
-                <i class="far fa-comments"></i> {{comment.count }} Comments
+                <i class="far fa-eye"></i> {{ post.views }} Views
+            </strong>
+        </div>
+        <!-- Displaying count of comments -->
+        <div class="col-6 text-right">
+            <strong class="text-secondary">
+                <i class="far fa-comments"></i> {{ comment_count }} Comments
             </strong>
         </div>
         <div class="col-12">
             <hr />
         </div>
     </div>
-    <!-- Can we display no of views or likes? -->
+
+
     <!-- Display Comments-->
     <div class="row">
         <div class="col-md-8 card mb-4 mt-3">
@@ -57,7 +64,8 @@
                 <!-- For loop to iterate through each comment in comments. Should they all be in there? -->
                 <!-- for comment in post.comments.all  -->
                 {% for comment in comments %}
-                <div class="p-2 comments {% if comment.status == 0 and comment.commenter == user %} faded{% elif comment.status == 0 and comment.commenter != user %} d-none{% endif %}"
+                <div
+                    class="p-2 comments {% if comment.status == 0 and comment.commenter == user %} faded{% elif comment.status == 0 and comment.commenter != user %} d-none{% endif %}">
                     <!-- IF comment is pending and the commenter is the logged in user -->
                     <!-- show faded comment with waiting for approval message -->
                     <!-- IF comment is pending (do we need to add and commenter is NOT user?) do not show -->
