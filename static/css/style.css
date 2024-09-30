@@ -9,12 +9,13 @@
     /* White for sections or cards */
     --dark-bg-color: #3A3A3F;
     /* Darker shade for contrasts */
+    --bright-bg-color: #ffD900;
     --highlight-color: #FFD900;
     /* Bright yellow for attention-grabbing elements */
     --highlight-text-color: #000000;
     --link-color: #FF0077;
     /* Pink for links to match the accent */
-    --approval-color: #FFD900;
+    --approval-color: #ff0077;
     /* Yellow for positive feedback or approvals */
     --faded-color: #9CA3AF;
     /* Neutral gray for muted text or placeholders */
@@ -81,7 +82,7 @@ body {
 }
 
 .author {
-    color: var(--light-bg-color);
+    color: var(--dark-bg-color);
     margin: 4px;
     text-transform: uppercase;
 }
@@ -96,7 +97,7 @@ body {
 }
 
 .masthead-text {
-    background-color: var(--dark-bg-color);
+    background-color: var(--bright-bg-color);
     color: var(--light-bg-color);
     position: relative;
 }
@@ -131,11 +132,12 @@ body {
 .post-title {
     margin-top: 10%;
     margin-left: 5%;
+    color: var(--dark-bg-color);
 }
 
 .post-subtitle {
     margin-left: 5%;
-    color: lightgray;
+    color: var(--dark-bg-color);
 }
 
 .btn-signup,
