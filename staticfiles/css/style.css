@@ -1,3 +1,190 @@
-h1 {
-    color: red;
+:root {
+    --background-color: #F9FAFC;
+    /* Soft off-white for a clean background */
+    --brand-color: #4A4A4F;
+    /* Dark gray for text and branding */
+    --accent-color: #FF0077;
+    /* Signature pink for highlights and buttons */
+    --light-bg-color: #ffffff;
+    /* White for sections or cards */
+    --dark-bg-color: #3A3A3F;
+    /* Darker shade for contrasts */
+    --bright-bg-color: #ffD900;
+    --highlight-color: #FFD900;
+    /* Bright yellow for attention-grabbing elements */
+    --highlight-text-color: #000000;
+    --link-color: #FF0077;
+    /* Pink for links to match the accent */
+    --approval-color: #ff0077;
+    /* Yellow for positive feedback or approvals */
+    --faded-color: #9CA3AF;
+    /* Neutral gray for muted text or placeholders */
+}
+
+/* Optional Gradient for Headers or Special Sections */
+.header-gradient {
+    background-image: linear-gradient(43deg, var(--accent-color) 0%, var(--highlight-color) 100%);
+}
+
+/* Now you can use these variables throughout your CSS */
+body {
+    background-color: var(--background-color);
+}
+
+.brand {
+    font-family: Lato, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--brand-color);
+}
+
+.red-o {
+    color: var(--accent-color);
+}
+
+.thin {
+    font-weight: 300;
+}
+
+.light-bg {
+    background-color: var(--light-bg-color);
+}
+
+.dark-bg {
+    background-color: var(--dark-bg-color);
+}
+
+.main-bg {
+    background-color: var(--background-color);
+}
+
+.card {
+    border: none;
+    background-color: transparent;
+}
+
+.image-container {
+    position: relative;
+}
+
+.image-flash {
+    position: absolute;
+    bottom: 5%;
+    min-width: 30%;
+    left: -2px;
+    background-color: var(--highlight-color);
+    color: var(--highlight-text-color);
+}
+
+.scale {
+    width: 100%;
+    height: auto;
+}
+
+.author {
+    color: var(--dark-bg-color);
+    margin: 4px;
+    text-transform: uppercase;
+}
+
+.masthead {
+    margin-top: 10px;
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+    height: 33vh;
+    width: 100%;
+}
+
+.masthead-text {
+    background-color: var(--bright-bg-color);
+    color: var(--light-bg-color);
+    position: relative;
+}
+
+.masthead-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.masthead-image:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 90%;
+    height: 100%;
+    width: 150%;
+    background: var(--dark-bg-color);
+    transform: skew(15deg);
+    z-index: 100;
+}
+
+.post-link {
+    text-decoration: none;
+    color: var(--dark-bg-color);
+}
+
+.post-link:hover,
+.page-link {
+    color: var(--accent-color);
+}
+
+.post-title {
+    margin-top: 10%;
+    margin-left: 5%;
+    color: var(--dark-bg-color);
+}
+
+.post-subtitle {
+    margin-left: 5%;
+    color: var(--dark-bg-color);
+}
+
+.btn-signup,
+.btn-edit {
+    background-color: var(--highlight-color);
+    color: var(--highlight-text-color);
+}
+
+.btn-signup:hover,
+.btn-signup:active {
+    background-color: var(--light-bg-color);
+    color: var(--link-color);
+}
+
+.link {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+.link:hover,
+.link:active {
+    color: var(--dark-bg-color);
+    text-decoration: underline;
+}
+
+.btn-like {
+    color: var(--accent-color);
+    border: none;
+    background: transparent;
+}
+
+.btn-delete {
+    color: var(--light-bg-color);
+    background: var(--accent-color);
+}
+
+.btn-like:hover,
+.btn-like:active {
+    color: var(--accent-color);
+    background: transparent;
+    border: none;
+}
+
+.faded {
+    color: var(--faded-color);
+}
+
+.approval {
+    color: var(--approval-color);
 }
