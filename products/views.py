@@ -96,3 +96,26 @@ def purchase_history(request):
 
     # Render the purchase history template with the purchase data
     return render(request, 'products/purchase_history.html', {'purchases': purchases})
+
+@login_required
+def fake_payment(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+       
+    if request.method == 'POST':
+        # Simulate payment success and create a purchase
+        Purchase.objects.create(
+            product=product,
+            user=request.user,
+            quantity=1,  # Set default to 1 for simplicity
+            price_paid=product.price, # Use current product price
+            status=1  # Mark as "completed"
+        )
+        return redirect('purchase_history', product_id=product.id)
+        
+    return render(request, 'products/fake_payment.html', {'product': product})
+
+
+@login_required
+def purchase_success(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    return render(request, 'products/purchase_success.html', {'product': product})
