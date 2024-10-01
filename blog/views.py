@@ -3,7 +3,7 @@ from django.views import generic  # to use CBV's
 from django.contrib import messages  # update users on comments/log in status
 from django.http import HttpResponseRedirect
 from .models import Post, Comment
-from .forms import CommentForm  # we use crispy forms
+from .forms import CommentForm  # crispy forms
 
 
 # Class based view for listing all the blog posts
@@ -23,7 +23,7 @@ def blog_post(request, slug):
     An instance of :model:`blog.Post`.
     
     **Template**
-    ;template:`blog/blog_list.html`
+    :template:`blog/blog_list.html`
     """
     # print("Inside blog_post view")  # Debug. Is the view called
     queryset = Post.objects.filter(status=1)  # Filter published posts
@@ -36,7 +36,7 @@ def blog_post(request, slug):
     comment_count = post.comments.filter(status=1).count()
 
     if request.method == 'POST':
-        print("received a POST request")  # Debugging
+        # print("received a POST request")  # Debugging
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
             # create a comment object but don't save to the db yet
@@ -50,15 +50,17 @@ def blog_post(request, slug):
                 request, messages.SUCCESS,
                 'Comment submitted and awaiting approval'
             )
-            
-            # Redirect to the blog post page to avoid form resubmission
-            return HttpResponseRedirect(reverse('blog_post', args=[slug]))
-            # if the comment is not valid we should send message?
-            # then return back to the comment form?
-    else:
-        # Handles GET requests and invalid forms
-        comment_form = CommentForm()
         
+    # This section doesn't work    
+    #         # Redirect to the blog post page to avoid form resubmission
+    #         return HttpResponseRedirect(reverse('blog_post', args=[slug]))
+    #         print("got to the redirect")  # Didnt ever get to this, just 
+    #           bypasses to "about to render template"
+    #             # if the comment is not valid we should send message?
+    #         # then return back to the comment form?
+    # # else:
+    #     # Handles GET requests and invalid forms
+    comment_form = CommentForm()
     print("about to render template") # Debugging
     return render(
         request,
@@ -69,28 +71,30 @@ def blog_post(request, slug):
             'comment_count': comment_count,
             'comment_form': comment_form,
         },
+        print("completed the render")
     )
 
 
 # View to edit comments
 def comment_edit(request, slug, comment_id):
-    queryset = Post.objects.filter(status=1)
-    post = get_object_or_404(queryset, slug=slug)
-    comment = get_object_or_404(Comment, pk=comment_id)
-
     if request.method == "POST":
+        queryset = Post.objects.filter(status=1)
+        post = get_object_or_404(Post, status=1, slug=slug)
+        comment = get_object_or_404(Comment, pk=comment_id)
         comment_form = CommentForm(data=request.POST, instance=comment)
+        
 
         if comment_form.is_valid() and comment.commenter == request.user:
             comment = comment_form.save(commit=False)
             comment.post = post  # already linked to the post or treating the
             # updated comment as new comment so need to link it to the post
-            comment_approved = False
+            comment.status = 0
             comment.save()
-            messages.add_message(request, messages.SUCCESS, "Comment updated!")
+            messages.add_message(request, messages.SUCCESS, "Comment updated and awaiting approval!")
         else:
             messages.add_message(request, messages.ERROR, "Error updating!")
-
+                
+                
     return HttpResponseRedirect(reverse("blog_post", args=[slug]))
 
 

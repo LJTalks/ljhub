@@ -109,7 +109,7 @@
         <form id="commentForm" method="post" style="margin-top: 1.3em">
             <!-- We're using crispy forms -->
             {{ comment_form | crispy }} {% csrf_token %}
-            <button id="sumbitButton" type="submit" class="btn btn-signup btn-lg">Add comment</button>
+            <button id="submitButton" type="submit" class="btn btn-signup btn-lg">Add comment</button>
         </form>
         {% else %}
         <!-- Prompt for users to log in or sign up before commenting -->
@@ -156,4 +156,4 @@
     <!-- Comment Form JS Script goes here  -->
     {% block extras %}
     <script src="{% static 'js/comments.js' %}"></script>
-    {% endblock extras %}
+    {% endblock %}
