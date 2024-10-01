@@ -88,6 +88,7 @@ def purchase_product(request, product_id):
         return HttpResponse("Sorry, there is not enough stock available.")
 
 
+# Purchase history
 @login_required
 def purchase_history(request):
     # Query for the logged-in user's purchases
@@ -97,6 +98,7 @@ def purchase_history(request):
     # Render the purchase history template with the purchase data
     return render(request, 'products/purchase_history.html', {'purchases': purchases})
 
+# Fake payment view
 @login_required
 def fake_payment(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -110,11 +112,18 @@ def fake_payment(request, product_id):
             price_paid=product.price, # Use current product price
             status=1  # Mark as "completed"
         )
-        return redirect('purchase_history', product_id=product.id)
-        
+        # Add success message
+        messages.success(request, f'Successfully purchased {product.title}!')
+        # Redirect to the purchase history page
+        return redirect('purchase_history')
+    
+    # If not a POST request, render the fake payment page
     return render(request, 'products/fake_payment.html', {'product': product})
 
 
+# Check this isn't duplicating above # View to handle product purchase (for customers?)
+ 
+# Purchase success view
 @login_required
 def purchase_success(request, product_id):
     product = get_object_or_404(Product, id=product_id)
