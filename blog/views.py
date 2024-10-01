@@ -104,7 +104,7 @@ def comment_delete(request, slug, comment_id):
     # do we need to get the post again just to delete the comment?
     post = get_object_or_404(queryset, slug=slug)
     comment = get_object_or_404(Comment, pk=comment_id)
-
+    
     if comment.commenter == request.user:
         comment.delete()
         messages.add_message(request, messages.SUCCESS, "Comment deleted!")
