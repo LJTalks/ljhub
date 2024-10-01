@@ -1,19 +1,25 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<p>This is the start of the product_detail.html</p>
-<p>These will be individual product details</p>
+<h2>{{ product.title }}</h2>
+<p>{{ product.description }}</p>
+<p>Price: £{{ product.price }}</p>
+<!--Or products? CHECK! -->
+<p>Category: {{ product.category }} </p> <!-- if not blank -->
 
-<!-- Display the individual blog post -->
-<h1>{{ product.title }}</h1>
-<p> Description: {{ product.description }} </p>
-<p>Price: {{ products.price }}</p>
-<p>Category: {{ products.category }} </p> <!-- if not blank -->
 <hr>
+
+<!-- Form to purchase the product  -->
+<form method="POST" action="{% url 'purchase_product' product.id %}">
+    {% csrf_token %}
+    <label for="quantity">Quantity:</label>
+    <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" required>
+    <button type="submit">Buy Now</button>
+</form>
 
 <h3>Related Products</h3>
 <p>If you like this, you might like these/this (depending if there's more than one)...</p>
-<p>I wonder how we could add an automatic related product look up 🤔</p>
+<!-- <p>I wonder how we could add an automatic related product look up 🤔</p> -->
 <!-- could we add an automated related product look up? -->
 <hr>
 <!-- Add reviews model? -->
@@ -30,5 +36,4 @@
     <button type="submit">Add Comment</button>
 </form> -->
 
-<p>This is the end of the product_detail.html</p>
 {% endblock %}

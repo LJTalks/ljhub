@@ -9,11 +9,7 @@
 <div class="masthead">
     <div class="container">
         <div class="row g-0">
-            <div class="col-md-6 masthead-text">
-                <h1 class="post-title">{{ post.title }}</h1>
-                <p class="post-subtitle">By {{ post.author }} on {{ post.created_on }}</p>
-            </div>
-            <div class="d-none d-md-block col-md-6 masthead-image">
+            <div class="d-none d-md-block col-md-12 masthead-image">
                 {% if "placeholder" in post.featured_image.url %}
                 <!-- Display a default image if there is no featured image -->
                 <img src="{% static 'images/blogplaceholder.webp' %}" class="scale" alt="placeholder">
@@ -21,8 +17,12 @@
                 <img src="{{ post.featured_img.url }}" class="scale" alt="{{ post.title }}" />
                 {% endif %}
             </div>
+            <div class="col-md-12 masthead-text"></div>
+            <h1 class="post-title">{{ post.title }}</h1>
+            <p class="post-subtitle">By {{ post.author }} on {{ post.created_on }}</p>
         </div>
     </div>
+</div>
 </div>
 
 <div class="container">

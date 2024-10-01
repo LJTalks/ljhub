@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
 </head>
+<title>LJ Hub</title>
+<!-- Credit CI I think therefore I blog walkthrough / M Briscoe -->
 
 <body class="d-flex flex-column h-100 main-bg">
     <!-- Navigation Bar -->
@@ -53,6 +55,9 @@
                     <!-- Authentication links -->
                     {% if user.is_authenticated %}
                     <!-- Only seen by logged in users -->
+                    <li class="nav-item">
+                        <a href="{% url 'purchase_history' %}" class="nav-link">My Purchase History</a>
+                    </li>
                     <li class="nav-item">
                         <a href="{% url 'account_logout' %}" class="nav-link">Log Out</a>
                     </li>

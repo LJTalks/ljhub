@@ -20,10 +20,13 @@ def home(request):
 
 # Product List View for potential customers
 def product_list(request):
-    products = Product.objects.filter(status=1) # did we give our products a status?)
+    # Fetch all products without filtering
+    products = Product.objects.all() 
+    return render(request, 'products/product_list.html', {'products': products})
+
     
-    
-# Product Details View for potential customers
+# Product Details View for potential customers (logged in only)
+@login_required
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     context = {
@@ -89,7 +92,7 @@ def purchase_product(request, product_id):
 def purchase_history(request):
     # Query for the logged-in user's purchases
     purchases = Purchase.objects.filter(
-        user=request.user).order_by('-purchase-date')
+        user=request.user).order_by('-purchase_date')
 
     # Render the purchase history template with the purchase data
-    return render(request, 'purchase_history.html', {'purchases': purchases})
+    return render(request, 'products/purchase_history.html', {'purchases': purchases})
