@@ -23,6 +23,6 @@ urlpatterns = [
     path('blog/', include('blog.urls')),  # Blog app
     path('products/', include('products.urls')),  # Products app
     path('summernote/', include('django_summernote.urls')),
-    path('', include('blog.urls')), #Home page points to blog app for now
+    path('', include('blog.urls'), name='blog-urls'), #Home page points to blog app for now
     # Does the home page link to blog_list? Do we need a different home page?
 ]
