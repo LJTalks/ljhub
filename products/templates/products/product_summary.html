@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>{{ product.title }}</h2>
-<p>{{ product.description }}</p>
+<p>{{ product.description | safe }}</p>
 <p>Price: £{{ product.price }}</p>
 <!--Or products? CHECK! -->
 <p>Category: {{ product.category }} </p> <!-- if not blank -->
@@ -10,12 +10,14 @@
 <hr>
 
 <!-- Form to purchase the product  -->
+<p>Order the full guide</p>
 <form method="POST" action="{% url 'purchase_product' product.id %}">
     {% csrf_token %}
     <label for="quantity">Quantity:</label>
     <input type="number" name="quantity" min="1" max="{{ product.stock }}" value="1" required>
     <button type="submit">Buy Now</button>
 </form>
+<hr>
 
 <h3>Related Products</h3>
 <p>If you like this, you might like these/this (depending if there's more than one)...</p>

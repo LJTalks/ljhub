@@ -1,14 +1,13 @@
 from django.contrib import admin
-from django_summernote.admin import SummernoteModelAdmin
 from .models import Product, Purchase
+from django_summernote.admin import SummernoteModelAdmin
 
 
 # Product Admin View
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'price', 'stock',
-                    'tier_one_limit', 'low_stock_threshold')
-    search_fields = ('title',)
-    list_filter = ('tier_one_limit', 'low_stock_threshold')
+class ProductAdmin(SummernoteModelAdmin):
+    summernote_fields = ('description',) # Apply Summernote to the 'description' field
+    list_display = ('title', 'slug', 'price', 'category') # removed stock and tier refs
+    search_fields = ('title', 'description')
     ordering = ('title',)
     prepopulated_fields = {'slug': ('title',)} # Auto Generates slug from title
 
