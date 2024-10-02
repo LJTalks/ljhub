@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from products.models import Product, Purchase
+from django.http import HttpResponse
 from django.views.generic import TemplateView
+from products.models import Product, Purchase
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -27,7 +27,6 @@ def product_list(request):
 
     
 # Product Details View for potential customers (logged in only)
-# This should be for the mini guides
 @login_required
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -36,7 +35,7 @@ def product_detail(request, slug):
     }
     return render(request, 'products/product_detail.html', context)
 
-# View to handle product purchase (for customers)
+# View to handle product purchase (for customers?)
 @login_required  # Ensure the user is logged in before they can purchase
 def purchase_product(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -44,56 +43,53 @@ def purchase_product(request, product_id):
     # Quantity will be sent via POST form
     quantity_ordered = int(request.POST.get('quantity', 1))  # Default to one
 
-    # # Check if stock is available/
-    # if product.stock >= quantity_ordered:
-    #     # Decrease stock by number bought/ordered (Before checking for alerts or pricing)
-    #     product.stock -= quantity_ordered
-    #     product.save()
+    # Check if stock is available/
+    if product.stock >= quantity_ordered:
+        # Decrease stock by number bought/ordered (Before checking for alerts or pricing)
+        product.stock -= quantity_ordered
+        product.save()
 
-        # # Check for low stock and email Admin if below threshold
-        # if product.stock <= product.low_stock_threshold and not product.low_stock_alert_sent:
-        #     send_mail(
-        #         'Low Stock Alert',
-        #         f'The Product {product.title} is running low on stock.',
-        #         'admin@test.com',
-        #         ['admin@test.com']
-        #     )
-        #     product.low_stock_alert_sent = True  # Mark that alert has been sent
-        #     product.save()
-        # 
-    #  Tiered pricing (e.g. first 100 are free, remaining at £4.99)
-    if product.tier_one_limit:
-        total_price = 0  # Assume Tier One price is free. Admin defines when adding products
+        # Check for low stock and send an email if below threshold
+        if product.stock <= product.low_stock_threshold and not product.low_stock_alert_sent:
+            send_mail(
+                'Low Stock Alert',
+                f'The Product {product.title} is running low on stock.',
+                'admin@test.com',
+                ['admin@test.com']
+            )
+            product.low_stock_alert_sent = True  # Mark that alert has been sent
+            product.save()
+
+        # Tiered pricing (e.g. first 100 are free, remaining at £4.99)
+        if product.stock >= product.tier_one_limit:
+            total_price = 0  # Tier One price (free)
+        else:
+            remaining_at_tier_one = max(
+                product.tier_one_limit - product.stock, 0)
+            price_tier_one = remaining_at_tier_one * product.tier_one_price
+            price_tier_two = (quantity_ordered -
+                              remaining_at_tier_one) * product.price
+            total_price = price_tier_one + price_tier_two
+
+        # Check if product is limited to one per customer
+        if product.limit_one_per_customer and quantity_ordered > 1:
+            return HttpResponse("This product is limited to one per customer.")
+
+        # Record the purchase in the Purchase model
+        Purchase.objects.create(
+            product=product,
+            user=request.user,  # current logged in user
+            quantity=quantity_ordered,
+            price_paid=total_price,
+            status=1  # Mark as "Completed"
+            )
+        # Add success message
+        messages.add_message(request, messages.SUCCESS, f"Successfully purchased {product.title}!")
     else:
-        # for now,manually update the price if necessary
-        # # remaining_at_tier_one = max(
-        #         product.tier_one_limit - product.stock, 0)
-        #     price_tier_one = remaining_at_tier_one * product.tier_one_price
-        #     price_tier_two = (quantity_ordered -
-        #                       remaining_at_tier_one) * product.price
-        total_price = quantity_ordered * product_price
+        messages.add_message(request, messages,ERROR, "Sorry, there is not enough stock available.")
 
-        # # Check if product is limited to one per customer
-        # if product.limit_one_per_customer and quantity_ordered > 1:
-        #     messages.error(request, "This product is limited to one per customer.")
-        #     return HttpResponseRedirect(reverse('product_detail', args=[product.slug]))
-
-    # Record the purchase in the Purchase model
-    Purchase.objects.create(
-        product=product,
-        user=request.user,  # current logged in user
-        quantity=quantity_ordered,
-        price_paid=total_price,
-        status=1  # Mark as "Completed"
-    )
-    # Add success message
-    messages.add_message(request, messages.SUCCESS, f"Successfully purchased {product.title}!")
-    # messages.add_message(request, messages,ERROR, "Sorry, something went wrong.")
-    # Redirect to purchase history
-    # return HttpResponseRedirect(reverse("purchase_history", args=[slug]))
-    
-    # Redirect to purchase history
-    return HttpResponseRedirect(reverse('purchase_history'))
+        # Redirect to purchase history
+        return HttpResponseRedirect(reverse("purchase_history", args=[slug]))
 
 
 # Purchase history
@@ -126,9 +122,11 @@ def fake_payment(request, product_id):
         messages.add_message(request, messages,ERROR, "Sorry, purchase unsuccessful.")
    
         # Redirect to the purchase history page
-        return redirect('purchase_history')
-    # If not a POST request, render the fake payment page
-    return render(request, 'products/fake_payment.html', {'product': product})
+return redirect('purchase_history')
+    
+    
+# If not a POST request, render the fake payment page
+return render(request, 'products/fake_payment.html', {'product': product})
 
 
 # Check this isn't duplicating above # View to handle product purchase (for customers?)
