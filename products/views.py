@@ -18,6 +18,13 @@ class HomePage(TemplateView):
 def home(request):
     return render(request, 'products/home.html')
 
+def login_or_signup(request):
+    """
+    Custom view to show login or signup options when accessing paid products
+    """
+    next_url = request.GET.get('next', '/')  # Get the next URL to redirect after login/signup
+    return render(request, 'custom_auth/login_or_signup.html', {'next': next_url})
+    
 # Product List View for potential customers/all users
 def product_list(request):
     # Fetch all products without filtering

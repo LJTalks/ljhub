@@ -42,7 +42,7 @@
         <p><strong>To access the full content, please
             <a href="{% url 'account_login' %'}" class="btn btn-secondary">Log in</strong></p>
         <p>Don't have an account?
-            <a href="{% url account_signup %}" class="btn btn-secondary">Register</a>here</p>
+            <a href="{% url account_signup %}?next={{ request.path }}" class="btn btn-secondary">Register</a>here</p>
 
         {% endif %}
         <!-- Is authenticated / logged in -->
