@@ -14,7 +14,6 @@
 
             <!-- Check if logged in user has purchased -->
             {% if is_purchased %}
-                <p>You have already purchased this product.</p>
                 <p>{{ product.content | safe }}</p> <!-- Full guide for purchased users -->
 
             {% else %}

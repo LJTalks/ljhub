@@ -3,16 +3,6 @@
 {% block content %}
 <h1>Purchase History</h1>
 
-<!-- Is this why the messages persist? Do we need this when Django is already givin us the message on action? -->
-{% if messages %}
-<ul>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-
-
 {% if purchases %}
 <ul>
     {% for purchase in purchases %}
