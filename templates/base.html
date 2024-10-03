@@ -64,10 +64,10 @@
                     {% else %}
                     <!-- These will show to non logged in users -->
                     <li class="nav-item">
-                    <a href="{% url 'account_signup' %}" class="nav-link">Register</a>
+                        <a href="{% url 'account_signup' %}?next={{ request.path }}" class="nav-link">Register</a>
                     </li>
                     <li class="nav-item">
-                    <a href="{% url 'account_login' %}" class="nav-link">Log In</a>
+                        <a href="{% url 'account_login' %}?next={{ request.path }}" class="nav-link">Log In</a>
                     </li>
                     {% endif %}
                     <!-- Add new nav items here? -->

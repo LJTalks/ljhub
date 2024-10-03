@@ -112,8 +112,8 @@
         </form>
         {% else %}
         <!-- Prompt for users to log in or sign up before commenting -->
-        <p>You must be <a href="{% url 'account_login' %}">logged in</a> to add a comment. Don't have an account? <a
-                href="{% url 'account_signup' %}">Sign up here</a></p>
+        <p>You must be <a href="{% url 'account_login' %}?next={{ request.path }}">logged in</a> to add a comment. Don't have an account? <a
+                href="{% url 'account_signup' %}?next={{ request.path }}">Sign up here</a></p>
         {% endif %}
     </div>
 </div>

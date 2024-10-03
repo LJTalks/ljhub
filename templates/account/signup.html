@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 
-{% load i18n %}
-
-{% block head_title %}{% trans "Register" %}{% endblock head_title %}
+{% block head_title %}Register{% endblock head_title %}
 
 {% block content %}
 <div class="container">
   <div class="row">
     <div class="col-md-8 mt-3 offset-md-2">
-      <h3>{% trans "Register" %}</h3>
+      <h3>Register</h3>
 
-      <p>{% blocktrans %}
-        Already have an account? Then please <a class="link" href="{{ login_url }}">sign in</a>.
-        {% endblocktrans %}</p>
+      <p>
+        Already have an account? Then please
+        <a class="link" href="{% url 'account_login' %}?next={{ next }}">sign in</a>.
+      </p>
     </div>
   </div>
   <div class="row">
@@ -24,7 +23,7 @@
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
         {% endif %}
         <button class="btn btn-primary btn-signup right" type="submit">
-          {% trans "Register" %} &raquo;
+          Register &raquo;
         </button>
       </form>
     </div>

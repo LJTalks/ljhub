@@ -74,8 +74,7 @@ def product_detail(request, slug):
         # If user is not logged in, direct to custom login/signup page,
         # then pass back to product
         messages.warning(request, "Please log in to access this product.")
-        login_url = reverse('account_login')  # Use Django allauth login URL
-        return redirect(f"/login_or_signup/?next={request.path}")  # Redirect to custom view with next parameter  
+        return redirect(f'/accounts/login/?next={request.path}')  # Redirect to Django allauth login
         
     # Render the appropriate product detail view
     return render(request, 'products/product_detail.html', context)
