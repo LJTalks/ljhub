@@ -7,7 +7,6 @@
     <li>
         <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
         <p>{{ product.content|truncatewords:20|safe }}</p> <!-- Show a preview of the content -->
-        <!-- need to mark safe too -->
     </li>
     {% endfor %}
 </ul>
