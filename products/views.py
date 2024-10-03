@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
+from notes.models import Note
 
 # Products views
 class HomePage(TemplateView):
@@ -36,6 +37,14 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     related_products = product.related_products.all()
     
+    # Get the user's notes for this product iftheyare authenticated
+    if request.user.is_authenticated:
+        notes = Note.objects.filter(user=request.user, product=product)
+    else:
+        notes = None  # If not logged in, no notes available
+        
+    # Pass the notes to the context
+    
     # Check purchased products for the current user
     if request.user.is_authenticated:
         purchased_products = Purchase.objects.filter(user=request.user).values_list('product_id', flat=True)
@@ -49,6 +58,7 @@ def product_detail(request, slug):
     # Initialise context with public content
     context = {
         'product': product,
+        'notes': notes,  # Add user notes
         'related_products': related_products,
         'purchased_related_products': purchased_related_products,  # Add the purchased related products here 
         'is_purchased': False,  # Default to not purchased

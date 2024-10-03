@@ -1,0 +1,20 @@
+{% if user.is_authenticated %}
+  <!-- Show user's notes -->
+  <h3>Your Notes</h3>
+  {% for note in notes %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <p>{{ note.content }}</p>
+        <small>Created on: {{ note.created_at }}</small>
+      </div>
+    </div>
+  {% empty %}
+    <p>You don't have any notes yet.</p>
+  {% endfor %}
+  
+  <!-- Form to add a new note -->
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="content">Add a new note:</label>
+      <textarea name="content" class="form-control" rows="4"

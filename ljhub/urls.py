@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # Admin panel
     path('blog/', include('blog.urls')),  # Blog app
     path('products/', include('products.urls')),  # Products app
+    path('notes', include('notes.urls', namespace='notes')),  # Notes app
     path('summernote/', include('django_summernote.urls')),
     
     # Custom login_or_signup page before slug or catch all's

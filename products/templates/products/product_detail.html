@@ -73,18 +73,21 @@
         {% endfor %}
     </ul>
 </div>
-<!-- Add reviews model? -->
-<div>
-    <h3>Possibly Reviews Section?</h3>
-    <p>We might add a reviews section here (but that would be yet *another* model!)</p>
-</div>
 
-<hr>
-<!-- Add reviews models? 
-<form method="post">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Add Comment</button>
-</form> -->
+<!-- Notes Section -->
+<div class="container"></div>
+    <h4>My Notes</h4>
+    {% if notes %}
+    <ul>
+        {% for note in notes %}
+        <li>{{ note.content }} - <em>{{ note.created_at }}</em></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>You have no notes for this product yet.</p>
+    {% endif %}
+    <a href="{% url 'notes:create' product.id %}" class="btn btn-primary">Add a note</a>
+    </div>
+</div>
 
 {% endblock %}
