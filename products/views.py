@@ -53,8 +53,8 @@ def product_detail(request, slug):
             return redirect('purchase_product', product_id=product.id)
     else:
         # If user is not logged in, prompt
-        messages.warning(request, "Please log in to access this product, or purchse it.")
-        return redirect('login') 
+        messages.warning(request, "Please log in to access this product, or it.")
+        return redirect('account_login') 
         
     # Render the appropriate product detail view
     return render(request, 'products/product_detail.html', context)
