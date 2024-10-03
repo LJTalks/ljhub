@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Product, Purchase
+from notes.models import Note
 from django_summernote.admin import SummernoteModelAdmin
 
 
