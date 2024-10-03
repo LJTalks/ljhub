@@ -18,7 +18,7 @@
 
 {% else %}
 <!-- Check where this shows up, we want all users except those who have 
- logged in and purchased to see this -->
+        logged in and purchased to see this -->
 <h2>Public Summary</h2>
 <p>{{ product.excerpt | safe }}</p> <!-- Public information -->
 <!-- CTA Buy the product -->
@@ -31,7 +31,7 @@
 {% else %}
 <!-- If user is not logged in, prompt to log in or register -->
 <p>Please <a href="{% url 'login %'}" class="btn btn-secondary">Log in</a> to purchase this product and access the content.</p>
-<p>Don't have an account? <a href="{% register %}" class="btn btn-secondary">Register</a>here</p>
+        <p>Don't have an account? <a href="{% register %}" class="btn btn-secondary">Register</a>here</p>
 
 {% endif %}
 <!-- Is authenticated / logged in -->
