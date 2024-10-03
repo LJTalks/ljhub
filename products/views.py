@@ -4,6 +4,7 @@ from products.models import Product, Purchase
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse
 
 # Products views
 class HomePage(TemplateView):
@@ -35,8 +36,8 @@ def product_detail(request, slug):
         'is_purchased': False,  # Default to not purchased
     }
     
-    # Check if the rpoduct is free for all users
-    if product.price == 0:
+    # Check if the product is free for all users (check if we need the decimal)
+    if product.price == 0.00:
         # If product is free, show full content to all users
         return render(request, 'products/product_detail.html', context)
     
@@ -52,9 +53,10 @@ def product_detail(request, slug):
             messages.warning(request, "You need to purchase this to access the full content.")
             return redirect('purchase_product', product_id=product.id)
     else:
-        # If user is not logged in, prompt
-        messages.warning(request, "Please log in to access this product, or it.")
-        return redirect('account_login') 
+        # If user is not logged in, prompt, then pass back to product
+        messages.warning(request, "Please log in to access this product.")
+        login_url = reverse('account_login')  # Use Django allauth login URL
+        return redirect(f"{login_url}?next={request.path}")  # Add ?next= with current page
         
     # Render the appropriate product detail view
     return render(request, 'products/product_detail.html', context)
