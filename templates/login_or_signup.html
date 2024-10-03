@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Register or Log in</h2>
+    <p>You need to register or log in to access this product.</p>
+
+
+    <!-- Sign up form -->
+    <a href="{% url 'account_signup' %}?next={{ next }}" class="btn btn-secondary">Register</a>
+
+    <!-- Login form -->
+    <a href="{% url 'account_login' %}?next={{ next }}" class="btn btn-primary">Log in</a>
+
+{% endblock %}

@@ -23,7 +23,7 @@ def login_or_signup(request):
     Custom view to show login or signup options when accessing paid products
     """
     next_url = request.GET.get('next', '/')  # Get the next URL to redirect after login/signup
-    return render(request, 'custom_auth/login_or_signup.html', {'next': next_url})
+    return render(request, 'login_or_signup.html', {'next': next_url})
     
 # Product List View for potential customers/all users
 def product_list(request):
@@ -54,7 +54,7 @@ def product_detail(request, slug):
         'is_purchased': False,  # Default to not purchased
     }
     
-    # Check if the product is free for all users (check if we need the decimal)
+    # Check if the product is free for all users
     if product.price == 0.00:
         # If product is free, show full content to all users
         return render(request, 'products/product_detail.html', context)
@@ -71,10 +71,11 @@ def product_detail(request, slug):
             messages.warning(request, "You need to purchase this to access the full content.")
             return redirect('fake_payment', product_id=product.id)
     else:
-        # If user is not logged in, prompt, then pass back to product
+        # If user is not logged in, direct to custom login/signup page,
+        # then pass back to product
         messages.warning(request, "Please log in to access this product.")
         login_url = reverse('account_login')  # Use Django allauth login URL
-        return redirect(f"{login_url}?next={request.path}")  # Add ?next= with current page
+        return redirect(f"/login_or_signup/?next={request.path}")  # Redirect to custom view with next parameter  
         
     # Render the appropriate product detail view
     return render(request, 'products/product_detail.html', context)
