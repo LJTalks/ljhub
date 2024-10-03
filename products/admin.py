@@ -5,11 +5,12 @@ from django_summernote.admin import SummernoteModelAdmin
 
 # Product Admin View
 class ProductAdmin(SummernoteModelAdmin):
-    summernote_fields = ('description',) # Apply Summernote to the 'description' field
+    summernote_fields = ('content', 'excerpt',) # Apply Summernote to these fields
     list_display = ('title', 'slug', 'price', 'category') # removed stock and tier refs
-    search_fields = ('title', 'description')
+    search_fields = ('title', 'content')
     ordering = ('title',)
     prepopulated_fields = {'slug': ('title',)} # Auto Generates slug from title
+    filter_horizontal = ('related_products',) # Adds a UI widget for ManyToManyField
 
 
 # Purchase Admin View

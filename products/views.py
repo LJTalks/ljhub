@@ -23,15 +23,41 @@ def product_list(request):
     products = Product.objects.all()
     return render(request, 'products/product_list.html', {'products': products})
 
-
-# Product Summary View for all users
-# This should be for the free guides
-def product_summary(request, slug):
+# Product Detail View handles free for all, and purchased for logged in users
+def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
+    related_products = product.related_products.all()
+    
+    # Initialise context with public content
     context = {
-        'product': product
+        'product': product,
+        'related_products': related_products,
+        'is_purchased': False,  # Default to not purchased
     }
-    return render(request, 'products/product_summary.html', context)
+    
+    # Check if the rpoduct is free for all users
+    if product.price == 0:
+        # If product is free, show full content to all users
+        return render(request, 'products/product_detail.html', context)
+    
+    # If the product is not free, check user logged in and purchased
+    if request.user.is_authenticated:
+        has_purchased = Purchase.objects.filter(product=product, user=request.user, status=1).exists()
+        
+        if has_purchased:
+            # User has purchased the product, show full content
+            context['is_purchased'] = True
+        else:
+            # User hasn't purchased, show warning and redirect to purchase
+            messages.warning(request, "You need to purchase this to access the full content.")
+            return redirect('purchase_product', product_id=product.id)
+    else:
+        # If user is not logged in, prompt
+        messages.warning(request, "Please log in to access this product, or purchse it.")
+        return redirect('login') 
+        
+    # Render the appropriate product detail view
+    return render(request, 'products/product_detail.html', context)
 
 # View to handle product purchase (for customers)
 @login_required  # Ensure the user is logged in before they can purchase
@@ -103,22 +129,3 @@ def fake_payment(request, product_id):
 def purchase_success(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     return render(request, 'products/purchase_success.html', {'product': product})
-
-
-# Product Detail View for logged in purchasers
-# This will be the more datiled, purchased guides
-@login_required
-def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug)
-    
-    # Check if user has purchased the product
-    if Purchase.objects.filter(product=product, user=request.user, status=1).exists():
-        # User has purchased the product, allow access to the detailed view
-        context = {
-            'product': product
-        }
-        return render(request, 'products/product_detail.html', context)
-    else:
-        # User has not purchased the product, redirect or show message
-        messages.error(request, "You need to purchase this product to access it.")
-        return redirect('purchase_product', product_id=product.id)

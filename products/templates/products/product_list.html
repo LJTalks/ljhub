@@ -5,8 +5,9 @@
 <ul>
     {% for product in products %}
     <li>
-        <a href="{% url 'product_summary' product.slug %}">{{ product.title }}</a>
-        <p>{{ product.description|truncatewords:20 }}</p> <!-- Show a preview of the content -->
+        <a href="{% url 'product_detail' product.slug %}">{{ product.title }}</a>
+        <p>{{ product.content|truncatewords:20|safe }}</p> <!-- Show a preview of the content -->
+        <!-- need to mark safe too -->
     </li>
     {% endfor %}
 </ul>

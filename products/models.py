@@ -8,21 +8,11 @@ from django.utils.text import slugify
 class Product(models.Model):
     title = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, unique=True, blank=True, null=True)
-    description = models.TextField()
+    content = models.TextField()
+    excerpt = models.TextField(blank=True) # Short summary for public view
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     category = models.CharField(max_length=100)
-    # stock = models.IntegerField(default=0)
-    # tier_one_price = models.DecimalField(
-    #     max_digits=10, decimal_places=2, default=0.00)
-    # tier_one_limit = models.IntegerField(
-    #     null=True, blank=True, default=0)  # No of units at price 1
-    # limit_one_per_customer = models.BooleanField(default=False)
-    # low_stock_threshold = models.PositiveIntegerField(
-    #     default=10)  # Admin can set this value
-    # # low-stock-alert-sent will need to be reset to False when stock is replenished
-    # low_stock_alert_sent = models.BooleanField(default=False)
-
-    # Check if current stock is greater than low stock threshold, if so, flag is reset to false
+    related_products = models.ManyToManyField('self', blank=True) # New field to link related products
 
     def save(self, *args, **kwargs):
         if not self.slug:  # Check if slug is not set

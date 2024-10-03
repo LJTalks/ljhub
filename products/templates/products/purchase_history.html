@@ -3,6 +3,7 @@
 {% block content %}
 <h1>Purchase History</h1>
 
+<!-- Is this why the messages persist? Do we need this when Django is already givin us the message on action? -->
 {% if messages %}
 <ul>
     {% for message in messages %}
@@ -11,11 +12,16 @@
 </ul>
 {% endif %}
 
+
 {% if purchases %}
 <ul>
     {% for purchase in purchases %}
     <li>
-        <strong>{{ purchase.product.title }}</strong> - {{ purchase.quantity }} purchased at £{{ purchase.price_paid }}
+        <!-- Link the product title to the product detail page using the slug -->
+        <a href="{% url 'product_detail' purchase.product.slug %}">
+            <strong>{{ purchase.product.title }}</strong>
+        </a>
+        - {{ purchase.quantity }} purchased at £{{ purchase.price_paid }}
         on
         {{ purchase.purchase_date }} ({{ purchase.get_status_display }})
     </li>

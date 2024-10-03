@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ product.title }}</h1>
+
+<hr>
+<!-- If the product is free, display full content for all users -->
+{% if product.price == 0.00 %}
+<p>{{ product.content | safe }}</p> <!-- Free guide content for all users -->
+
+{% else %}
+<!-- If the product is not free check the user is logged in -->
+{% if user.is_authenticated %}
+
+<!-- Check if logged in user has purchased -->
+{% if is_purchased %}
+<p>{{ product.content | safe }}</p> <!-- Full guide for purchased users -->
+
+{% else %}
+<!-- Check where this shows up, we want all users except those who have 
+ logged in and purchased to see this -->
+<h2>Public Summary</h2>
+<p>{{ product.excerpt | safe }}</p> <!-- Public information -->
+<!-- CTA Buy the product -->
+<p><strong>To access the full guide, please purchase the product.</strong></p>
+<p>Price: £{{ product.price }}</p>
+<a href="{% url 'purchase_product' product.id %}" class="btn btn-primary">Purchase Now</a>
+{% endif %}
+<!-- is purchased -->
+
+{% else %}
+<!-- If user is not logged in, prompt to log in or register -->
+<p>Please <a href="{% url 'login %'}" class="btn btn-secondary">Log in</a> to purchase this product and access the content.</p>
+<p>Don't have an account? <a href="{% register %}" class="btn btn-secondary">Register</a>here</p>
+
+{% endif %}
+<!-- Is authenticated / logged in -->
+
+{% endif %}
+<!-- product is free -->
+
+<hr>
+<!-- Related Products Section -->
+<div class="related-products">
+    <h3>Related Products</h3>
+    <p>If you like this, you might like...</p>
+    <ul>
+        {% for related_product in product.related_products.all %}
+        <li>
+            <a href="{% url 'product_detail' related_product.slug %}">{{ related_product.title }} -
+                {% if related_product.price > 0.00 %} £{{ related_product.price }}
+                {% else %} Free {% endif %}
+            </a>
+        </li>
+        {% empty %}
+        <li>No related products available.</li>
+        <hr>
+        {% endfor %}
+    </ul>
+</div>
+<!-- Add reviews model? -->
+<div>
+    <h3>Possibly Reviews Section?</h3>
+    <p>We might add a reviews section here (but that would be yet *another* model!)</p>
+</div>
+
+<hr>
+<!-- Add reviews models? 
+<form method="post">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button type="submit">Add Comment</button>
+</form> -->
+
+{% endblock %}
