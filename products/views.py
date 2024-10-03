@@ -29,10 +29,21 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     related_products = product.related_products.all()
     
+    # Check purchased products for the current user
+    if request.user.is_authenticated:
+        purchased_products = Purchase.objects.filter(user=request.user).values_list('product_id', flat=True)
+        related_products = related_products.exclude(id__in=purchased_products)
+        # create purchased_retlated_products to store related products the user has purchased
+        purchased_related_products = product.related_products.filter(id__in=purchased_products)
+    else:
+        # If the user is not authenticated,there will be no purchased products
+        purchased_related_products = []
+
     # Initialise context with public content
     context = {
         'product': product,
         'related_products': related_products,
+        'purchased_related_products': purchased_related_products,  # Add the purchased related products here 
         'is_purchased': False,  # Default to not purchased
     }
     

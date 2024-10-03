@@ -56,9 +56,11 @@
     <h3>Related Products</h3>
     <p>If you like this, you might like...</p>
     <ul>
+        <!-- Show non-purchased related products -->
         {% for related_product in product.related_products.all %}
         <li>
-            <a href="{% url 'product_detail' related_product.slug %}">{{ related_product.title }} -
+            <a href="{% url 'product_detail' related_product.slug %}">
+                {{ related_product.title }} -
                 {% if related_product.price > 0.00 %} £{{ related_product.price }}
                 {% else %} Free {% endif %}
             </a>
@@ -67,6 +69,20 @@
         <li>No related products available.</li>
         <hr>
         {% endfor %}
+    </ul>
+    <h3>Purchased Related Products</h3>
+    <p>You've already purchased these products:</p>
+    <ul>
+        <!-- Show purchased related products -->
+         {% for purchased_product in purchased_related_products %}
+         <li>
+            <a href="{% url 'product_detail' purchased_product.slug %}">
+                {{ purchased_product.title }} - Already Purchased
+            </a>
+         </li>
+         {% empty %}
+         <li>No purchased related products.</li>
+         {% endfor %}
     </ul>
 </div>
 <!-- Add reviews model? -->
