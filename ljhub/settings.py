@@ -64,6 +64,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 SITE_ID = 1 # So Django can handle multiple sites from one database
 LOGIN_REDIRECT_URL = '/'  # returns user to home page after logging in
 LOGOUT_REDIRECT_URL = '/'  # returns user to home page after logging out
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Unless redirected with Next, go to blog list
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

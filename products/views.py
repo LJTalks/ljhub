@@ -51,7 +51,7 @@ def product_detail(request, slug):
         else:
             # User hasn't purchased, show warning and redirect to purchase
             messages.warning(request, "You need to purchase this to access the full content.")
-            return redirect('purchase_product', product_id=product.id)
+            return redirect('fake_payment', product_id=product.id)
     else:
         # If user is not logged in, prompt, then pass back to product
         messages.warning(request, "Please log in to access this product.")
@@ -112,14 +112,11 @@ def fake_payment(request, product_id):
             product=product,
             user=request.user,
             quantity=1,  # Set default to 1 for simplicity
-            price_paid=product.price, # Use current product price
+            price_paid=product.price,  # Use current product price
             status=1  # Mark as "completed"
         )
         # Add success message
         messages.add_message(request, messages.SUCCESS, f'Successfully purchased {product.title}!')
-    else:
-        messages.add_message(request, messages,ERROR, "Sorry, purchase unsuccessful.")
-   
         # Redirect to the purchase history page
         return redirect('purchase_history')
     # If not a POST request, render the fake payment page

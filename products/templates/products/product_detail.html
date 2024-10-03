@@ -1,50 +1,55 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ product.title }}</h1>
+    <h1>{{ product.title }}</h1>
 
-<hr>
-<!-- If the product is free, display full content for all users -->
-{% if product.price == 0.00 %}
-<p>{{ product.content | safe }}</p> <!-- Free guide content for all users -->
+    <hr>
+    <!-- If the product is free, display full content for all users -->
+    {% if product.price == 0.00 %}
+        <p>{{ product.content | safe }}</p> <!-- Free guide content for all users -->
 
-{% else %}
-<!-- If the product is not free check the user is logged in -->
-{% if user.is_authenticated %}
+    {% else %}
+        <!-- If the product is not free check the user is logged in -->
+        {% if user.is_authenticated %}
 
-<!-- Check if logged in user has purchased -->
-{% if is_purchased %}
-<p>{{ product.content | safe }}</p> <!-- Full guide for purchased users -->
+            <!-- Check if logged in user has purchased -->
+            {% if is_purchased %}
+                <p>You have already purchased this product.</p>
+                <p>{{ product.content | safe }}</p> <!-- Full guide for purchased users -->
 
-{% else %}
-<!-- If user is not logged in, show excerpt and prompt to log in -->
-<!-- Check where this shows up, we want all users except those who have 
-            logged in and purchased to see this -->
-<h2>Public Summary</h2>
-<p>{{ product.excerpt | safe }}</p> <!-- Public information -->
-<!-- CTA Buy the product -->
-<!-- This is misplaced, it should only be shown to authenticated users who haven't purchased -->
-<p><strong>To access the full guide, please purchase the product.</strong></p>
-<p>Price: £{{ product.price }}</p>
-<a href="{% url 'purchase_product' product.id %}" class="btn btn-primary">Purchase Now</a>
+            {% else %}
+                <p>You have not purchased this product.</p>
+                <a href="{% url 'fake_payment' product.id %}" class="btn btn-primary">Purchase Now!</a>
+                <!-- If user is not logged in, show excerpt and prompt to log in -->
+                <!-- Check where this shows up, we want all users except those who have
+                 logged in and purchased to see this -->
+                <h2>Public Summary</h2>
+                <p>{{ product.excerpt | safe }}</p> <!-- Public information -->
+                <!-- CTA Buy the product -->
+                <!-- This is misplaced, it should only be shown to authenticated users who haven't purchased -->
+                <p><strong>To access the full guide, please purchase the product.</strong></p>
+                <p>Price: £{{ product.price }}</p>
+                <a href="{% url 'purchase_product' product.id %}" class="btn btn-primary">Purchase Now!</a>
 
-{% endif %}
-<!-- is logged in and purchased -->
+            {% endif %}
+            <!-- is logged in and purchased -->
 
-{% else %}
-<!-- If user is not logged in, Show the excerpt -->
-<!-- prompt to log in or register to view product, or purchase -->
-<h2>Public Summary</h2>
-<p>{{ product.excerpt | safe }}</p> <!-- Public information -->
-<!-- CTA Log in -->
-<p><strong>To access the full content, please <a href="{% url 'account_login' %'}" class="btn btn-secondary">Log in</strong></p>
-<p>Don't have an account? <a href="{% url account_signup %}" class="btn btn-secondary">Register</a>here</p>
+        {% else %}
+        <!-- If user is not logged in, Show the excerpt -->
+        <!-- prompt to log in or register to view product, or purchase -->
+        <h2>Public Summary</h2>
+        <p>{{ product.excerpt | safe }}</p> <!-- Public information -->
+        <!-- CTA Log in -->
+        <p><strong>To access the full content, please
+            <a href="{% url 'account_login' %'}" class="btn btn-secondary">Log in</strong></p>
+        <p>Don't have an account?
+            <a href="{% url account_signup %}" class="btn btn-secondary">Register</a>here</p>
 
-{% endif %}
-<!-- Is authenticated / logged in -->
+        {% endif %}
+        <!-- Is authenticated / logged in -->
 
-{% endif %}
-<!-- product is free -->
+    {% endif %}
+    <!-- product is free -->
 
 <hr>
 <!-- Related Products Section -->
