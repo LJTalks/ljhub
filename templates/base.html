@@ -36,7 +36,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <!-- Home is currently the blog list -->
-            <a href="{% url 'blog_list' %}" class="navbar-brand">LJHub</a>
+            <a href="{% url 'blog_list' %}" class="navbar-brand">LJ Hub</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                 aria-controls="navbarText" aria-controls=navbarText aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -46,7 +46,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a href="{% url 'blog_list' %}"
-                            class="nav-link {% if request.path == blog_url %}active{% endif %}"
+                            class="nav-link {% if request.resolver_match.url_name == 'blog_list' %}active{% endif %}"
                             aria-current="page">Blog</a>
                     </li>
                     <li class="nav-item">
@@ -63,10 +63,10 @@
                     </li>
                     {% else %}
                     <!-- These will show to non logged in users -->
-                    <li class="nav-item"></li>
+                    <li class="nav-item">
                     <a href="{% url 'account_signup' %}" class="nav-link">Register</a>
                     </li>
-                    <li class="nav-item"></li>
+                    <li class="nav-item">
                     <a href="{% url 'account_login' %}" class="nav-link">Log In</a>
                     </li>
                     {% endif %}
