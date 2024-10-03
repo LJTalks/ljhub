@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django_summernote', # Rich text editor for admin
     'blog', # My custom apps come after django then third-party apps
+    'notes',
     'products',
     'user_profile',
 ]
