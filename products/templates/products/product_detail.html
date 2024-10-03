@@ -64,25 +64,14 @@
                 {% if related_product.price > 0.00 %} £{{ related_product.price }}
                 {% else %} Free {% endif %}
             </a>
+            {% if related_product in purchased_related_products %}
+            <span>(Already Purchased)</span>  <!-- Add label if already purchased -->
+            {% endif %}
         </li>
         {% empty %}
         <li>No related products available.</li>
         <hr>
         {% endfor %}
-    </ul>
-    <h3>Purchased Related Products</h3>
-    <p>You've already purchased these products:</p>
-    <ul>
-        <!-- Show purchased related products -->
-         {% for purchased_product in purchased_related_products %}
-         <li>
-            <a href="{% url 'product_detail' purchased_product.slug %}">
-                {{ purchased_product.title }} - Already Purchased
-            </a>
-         </li>
-         {% empty %}
-         <li>No purchased related products.</li>
-         {% endfor %}
     </ul>
 </div>
 <!-- Add reviews model? -->
