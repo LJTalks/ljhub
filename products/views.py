@@ -37,7 +37,7 @@ def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     related_products = product.related_products.all()
     
-    # Get the user's notes for this product iftheyare authenticated
+    # Get the user's notes for this product if they are authenticated
     if request.user.is_authenticated:
         notes = Note.objects.filter(user=request.user, product=product)
     else:

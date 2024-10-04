@@ -74,39 +74,6 @@
         {% endfor %}
     </ul>
 </div>
-
-<!-- Notes Section -->
-<div class="container"></div>
-<div class="col-md-8 card mb-4 mt-3">
-    <h3>Your Notes</h3>
-    <!-- Check if there are any notes -->
-    {% if notes %}
-    <!-- Loop through each note and display it -->
-    <div class="card-body">
-        <ul class="list-unstyled">
-            {% for note in notes %}
-            <li class="p-2 note-item">
-                <strong>{{ note.content }}</strong>
-                <br>
-                <em>{{ note.created_at }}</em>
-                <!-- If the note belongs to the logged-in user, show edit and delete buttons -->
-                {% if note.user == user %}
-                <div class="mt-2">
-                    <a href="{% url 'notes:edit' note.id %}" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="{% url 'notes:delete' note.id %}" class="btn btn-sm btn-danger">Delete</a>
-                </div>
-                {% endif %}
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-    {% else %}
-    <!-- Message displayed if there are no notes yet -->
-    <p>You have no notes for this product yet.</p>
-    {% endif %}
-    <a href="{% url 'notes:create' product.id %}" class="btn btn-primary mt-3">Add a Note</a>
-</div>
-
 <hr />
 
 <!-- Notes Section -->
@@ -126,8 +93,8 @@
                     <em>{{ note.created_at }}</em>
                     <div class="mt-2">
                         <!-- Edit and delete buttons, since only the user sees their own notes -->
-                        <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="{% url 'notes:delete_note' note.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this note?');">Delete</a>
+                        <a href="{% url 'notes:edit_note' note.id %}?next={% url 'product_detail' product.slug %}" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="{% url 'notes:delete_note' note.id %}?next={% url 'product_detail' product.slug %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this note?');">Delete</a>
                     </div>
                 </li>
                 {% endfor %}

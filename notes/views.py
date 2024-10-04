@@ -38,7 +38,14 @@ def edit_note(request, note_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Note updated successfully!')
-            return redirect('note_list', product_id=note.product.id)
+            
+            # Check for 'next' parameter to decide redirection
+            next_url = request.GET.get('next')
+            if next_url:
+                return redirect(next_url)
+            
+            # Default redirect to note list if next not provided
+            return redirect('notes:note_list', product_id=note.product.id)
     else:
         form = NoteForm(instance=note)
     return render(request, 'notes/note_form.html', {'form': form, 'note': note})
@@ -50,4 +57,11 @@ def delete_note(request, note_id):
     product_id = note.product.id
     note.delete()
     messages.success(request, 'Note deleted successfully!')
-    return redirect('note_list', product_id=product_id)
+    
+    # Check for 'next' to decide where to redirect
+    next_url = request.GET.get('next')
+    if next_url:
+        return redirect(next_url)
+    
+    # Default redirect to notes list if 'next' not provided
+    return redirect('notes:note_list', product_id=product_id)
