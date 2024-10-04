@@ -95,7 +95,6 @@ body {
     overflow: hidden;
     position: relative;
     display: inline-block;
-    /* height: 33vh; */
     width: 30%;
     padding: 0;
 }
@@ -113,19 +112,6 @@ body {
     position: relative;
 }
 
-
-/* This is the diagonal line which takes up too much space
-.masthead-image:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 90%;
-    height: auto%;
-    width: 50%;
-    background: var(--dark-bg-color);
-    transform: skew(15deg);
-    z-index: 100;
-} */
 
 .post-link {
     text-decoration: none;

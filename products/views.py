@@ -123,8 +123,6 @@ def purchase_product(request, product_id):
     
     # Add success message
     messages.add_message(request, messages.SUCCESS, f"Successfully purchased {product.title}!")
-    # else
-    # messages.add_message(request, messages,ERROR, "Sorry, something went wrong.")
     
     # Redirect to purchase history
     return HttpResponseRedirect(reverse("purchase_history"))

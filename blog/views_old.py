@@ -5,15 +5,6 @@ from django.http import HttpResponse
 from .models import Post, Comment
 from .forms import CommentForm # we use crispy forms
 
-#reverse is for generating URLs , similar to in templates {% url 'view' arg1 arg2 %}
-
-# # Function based View for listing all blog posts
-# def blog_list(request):
-#     # Fetch all published blog posts and order them by creation date, newest first
-#     posts = Post.objects.filter(status=1).order_by(
-#         '-created_on')  # Only show published posts
-#     # Pass the posts to the template
-#     return render(request, 'blog/blog_list.html', {'posts': posts})
 
 # Class based view for listing all the blog posts # (used in walkthrough)
 class BlogList(generic.ListView):
@@ -33,10 +24,6 @@ def blog_post(request, slug):
     comments = post.comments.all().order_by("created_at")
     comment_count = post.comments.filter(status=1).count()  # Fetch approved comments for the post and add count 
     
-    
-    # Initialize 'comment' variable (to avoid the return comment:comment error )
-    # comment = None # do we need this now?
-
     # Check if comment form is submitted
     if request.method == 'POST':
         comment_form = CommentForm(data=request.POST)
@@ -52,10 +39,9 @@ def blog_post(request, slug):
                 request, messages.SUCCESS,
                 'Comment submitted and awaiting approval'
             )
-            # return redirect(reverse('blog_post', slug=post.slug)) # Return to the blog post
         
     else:
-        comment_form = CommentForm() # if the comment is not valid we should send message? 
+        comment_form = CommentForm() #
         # then return back to the comment form?
 
     return render(

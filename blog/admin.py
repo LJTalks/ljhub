@@ -7,7 +7,7 @@ from .models import Post, Comment
 # Admin panel for managing blog posts 
 @admin.register(Post)
 class PostAdmin(SummernoteModelAdmin):
-    # fields to dispaly in the admin panel for the Post model 
+    # fields to display in the admin panel for the Post model 
     list_display = ('title', 'slug', 'status', 'created_on', 'publish_date')
     # Enable search functionality in these fields
     search_fields = ['title', 'content']
