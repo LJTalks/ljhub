@@ -91,32 +91,30 @@ body {
 }
 
 .masthead {
-    margin-top: 10px;
+    margin-top: 20px;
     overflow: hidden;
     position: relative;
     display: inline-block;
     /* height: 33vh; */
     width: 30%;
+    padding: 0;
 }
 
 .masthead-text {
     background-color: var(--bright-bg-color);
     color: var(--light-bg-color);
     position: relative;
+    text-align: center;
 }
 
 .masthead-image {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80%;
-    width: auto;
-    overflow: hidden;
+    max-width: 90%;
+    height: auto;
     position: relative;
 }
 
 
-/* This is the diagonal lie which takes up too much space */
+/* This is the diagonal line which takes up too much space
 .masthead-image:after {
     content: "";
     position: absolute;
@@ -127,7 +125,7 @@ body {
     background: var(--dark-bg-color);
     transform: skew(15deg);
     z-index: 100;
-}
+} */
 
 .post-link {
     text-decoration: none;
@@ -140,9 +138,12 @@ body {
 }
 
 .post-title {
-    margin-top: 10%;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-top: 20%;
     margin-left: 5%;
     color: var(--dark-bg-color);
+    text-align: center;
 }
 
 .post-subtitle {

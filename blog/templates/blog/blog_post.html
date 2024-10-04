@@ -7,9 +7,9 @@
 
 <!-- Display the blog section with the post title and author -->
 <div class="masthead">
-    <div class="container">
-        <div class="row g-0">
-            <div class="d-none d-md-block col-md-12 masthead-image">
+    <div class="container text-center">
+        <div class="row justify-content-center">
+            <div class="col-md-12 masthead-image">
                 {% if "placeholder" in post.featured_image.url %}
                 <!-- Display a default image if there is no featured image -->
                 <img src="{% static 'images/blogplaceholder.webp' %}" class="scale" alt="placeholder">
@@ -22,7 +22,6 @@
             <p class="post-subtitle">By {{ post.author }} on {{ post.created_on }}</p>
         </div>
     </div>
-</div>
 </div>
 
 <div class="container">

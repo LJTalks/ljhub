@@ -1,11 +1,18 @@
-from django.shortcuts import render, get_object_or_404, redirect, reverse
+# Standard library imports
 from django.http import HttpResponse, HttpResponseRedirect
-from products.models import Product, Purchase
-from django.views.generic import TemplateView
-from django.contrib.auth.decorators import login_required
+
+# Third-party imports
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+from django.views.generic import TemplateView
+
+# Local application imports
 from notes.models import Note
+from products.models import Product, Purchase
+
 
 # Products views
 class HomePage(TemplateView):
@@ -28,9 +35,14 @@ def login_or_signup(request):
     
 # Product List View for potential customers/all users
 def product_list(request):
-    # Fetch all products without filtering
+    # Fetch all products
     products = Product.objects.all()
-    return render(request, 'products/product_list.html', {'products': products})
+    # Initialize the paginator, 6 products per page
+    paginator = Paginator(products, 6)  # Show 6 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    # Pass the paginated object to the template
+    return render(request, 'products/product_list.html', {'page_obj': page_obj})
 
 # Product Detail View handles free for all, and purchased for logged in users
 def product_detail(request, slug):
