@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
+from django.utils import timezone
 
 # Post Status Choices
 
@@ -27,11 +28,12 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     status = models.IntegerField(choices=POST_STATUS_CHOICES, default=0)
     updated_on= models.DateTimeField(auto_now=True)
+    publish_date = models.DateTimeField(default=timezone.now) # New field for publish date
     excerpt = models.TextField(blank=True)
     views = models.IntegerField(default=0) # New field for tracking views
 
     class Meta:
-        ordering = ['-created_on']
+        ordering = ['-publish_date']
         
     def __str__(self):
         return f"{self.title} | {self.author}"

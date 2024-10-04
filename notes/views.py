@@ -24,7 +24,7 @@ def add_note(request, product_id):
             note.product = product
             note.save()
             messages.success(request, 'Note added successfully!')
-            return redirect('note_list', product_id=product.id)
+            return redirect('notes:note_list', product_id=product.id)
     else:
         form = NoteForm()
     return render(request, 'notes/note_form.html', {'form': form, 'product': product})

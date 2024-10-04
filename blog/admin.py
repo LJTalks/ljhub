@@ -8,15 +8,22 @@ from .models import Post, Comment
 @admin.register(Post)
 class PostAdmin(SummernoteModelAdmin):
     # fields to dispaly in the admin panel for the Post model 
-    list_display = ('title', 'slug', 'status', 'created_on')
+    list_display = ('title', 'slug', 'status', 'created_on', 'publish_date')
     # Enable search functionality in these fields
     search_fields = ['title', 'content']
     # filters narrow down displayed posts
-    list_filter = ('status', 'created_on')
+    list_filter = ('status', 'created_on', 'publish_date')
     # Automate the slug population
     prepopulated_fields = {'slug': ('title',)}
     # WYSIWYG fields
     summernote_fields = ('content',)
+    
+    # Manualy set the publish_date in the admin panel
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'slug', 'author', 'featured_image', 'content', 'excerpt', 'status', 'publish_date')
+        }),
+    )
     
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
@@ -41,6 +48,7 @@ class CommentAdmin(admin.ModelAdmin):
     # Over ride save model to auto fill commenter field in admin panel 
     # the logged in user is the commenter
     # the following code suggested by chatgpt
+    
 def save_model(self, request, obj, form, change):
         # If the commenter field is not set, use the current logged-in admin user as the commenter
         # Last comment is a bit weird; why would it not be set 🤣

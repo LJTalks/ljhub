@@ -1,3 +1,6 @@
+{% extends 'base.html' %}
+
+{% block content %}
 {% if user.is_authenticated %}
   <!-- Show user's notes -->
   <h3>Your Notes</h3>
@@ -6,6 +9,10 @@
       <div class="card-body">
         <p>{{ note.content }}</p>
         <small>Created on: {{ note.created_at }}</small>
+        <br>
+        <!-- Edit and Delete Buttons -->
+        <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-warning btn-sm">Edit</a>
+        <a href="{% url 'notes:delete_note' note.id %}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this note?');">Delete</a>
       </div>
     </div>
   {% empty %}
@@ -17,4 +24,9 @@
     {% csrf_token %}
     <div class="form-group">
       <label for="content">Add a new note:</label>
-      <textarea name="content" class="form-control" rows="4"
+      <textarea name="content" class="form-control" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Add Note</button>
+  </form>
+{% endif %}
+{% endblock %}
