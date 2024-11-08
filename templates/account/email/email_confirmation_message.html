@@ -1,31 +1,4 @@
-<!-- This is the email after registration -->
-{% extends "account/email/base_message.txt" %}
-{% load account %}
-{% load i18n %}
-
-{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}You're
-receiving this email because user {{ user_display }} has given your email address to register an account on
-{{ site_domain }}.
-
-To confirm this is correct, go to {{ activate_url }}{% endblocktrans %}{% endautoescape %}{% endblock content %}
-
-
-{# templates/account/email/email_confirmation_message.html #}
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Email Confirmation</title>
-</head>
-
-<body>
-    <p>Hello {{ user.username }},</p>
-    <p>Thank you for signing up. Please confirm your email by clicking the link below:</p>
-    <p><a href="{{ activate_url }}">Confirm Email</a></p>
-</body>
-
-</html>
+<!-- Need to activate the unsubscribe option 
 This is the nice email to confirm registration and verify email request with the green button -->
 {% extends "account/email/base_message.txt" %}
 {% load account %}
@@ -33,9 +6,13 @@ This is the nice email to confirm registration and verify email request with the
 
 <div style="font-family: Arial, sans-serif; text-align: center;">
     <!-- Welcome and Username -->
+    {% block subject %}
+    LJ Media - Please confirm your email address
+    {% endblock subject %}
 
     <!-- <p>This is a custom email template for testing purposes.</p> -->
-    <h1>Welcome to LJ Talks!</h1>
+    {% block body %}
+    <h1>Welcome to LJ Media!</h1>
     <p>{% blocktrans %}Hello {{ user.username }},{% endblocktrans %}</p>
 
     <!-- Verify Email Button -->
@@ -48,6 +25,8 @@ This is the nice email to confirm registration and verify email request with the
     <p>{% blocktrans %}If you did not sign up for this account, please ignore this email.{% endblocktrans %}</p>
 </div>
 
+{% endblock body %}
+
 <!-- Footer Section -->
 <hr style="border: 0; border-top: 1px solid #ddd;">
 <div style="font-family: Arial, sans-serif; text-align: center; font-size: 12px; color: #777;">
@@ -57,5 +36,5 @@ This is the nice email to confirm registration and verify email request with the
             style="color: #2a2a2b;">LJ Talks</a>.</p>
     <p>If you no longer wish to receive these emails, <a href="{{ unsubscribe_url }}" style="color: #007bff;">click here
             to unsubscribe</a>.</p>
-    <p>&copy; 2024 LJ Talks, All rights reserved.</p>
+    <p>&copy; 2024 LJ Media, All rights reserved.</p>
 </div>

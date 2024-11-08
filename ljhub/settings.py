@@ -135,11 +135,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = True
 
-
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Dev
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Prod
 EMAIL_HOST = 'mail.privateemail.com'
-EMAIL_PORT = 587  # or 465 depending on your provider
+EMAIL_PORT = 465  # or 587 depending on your provider
 EMAIL_USE_TLS = True  # or False if using SSL
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
