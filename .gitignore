@@ -8,5 +8,6 @@ node_modules/
 .github/
 cloudinary_python.txt
 sqlbackups/
+backup_db.sg
 
 # staticfiles

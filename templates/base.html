@@ -13,11 +13,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 maximum-scale=1.0, user-scaleable='no'">
     <!-- Primary Meta Tags -->
-     <meta name="description" content="LJ Hub is your go-to platform for digital products, blogs, and resources. Explore courses, articles, and personalized content designed to help freelancers and entrepreneurs grow."/>
-     <meta name="keywords" content="LJ Hub, digital products, blog, resources, freelancers, entrepreneurs, courses, web development, learning, tutorials, digital marketing"/>
-     <meta name="author" content="LJ Talks"/>
-     <title>{% block title %} LJ Hub | Digital Products, Blogs, and Resources {% endblock title %}</title>
-    
+    <meta name="description"
+        content="LJ Hub is your go-to platform for digital products, blogs, and resources. Explore courses, articles, and personalized content designed to help freelancers and entrepreneurs grow." />
+    <meta name="keywords"
+        content="LJ Hub, digital products, blog, resources, freelancers, entrepreneurs, courses, web development, learning, tutorials, digital marketing" />
+    <meta name="author" content="LJ Talks" />
+    <title>{% block title %} LJ Hub | Digital Products, Blogs, and Resources {% endblock title %}</title>
+    <!-- May need to change block title to block head_title for allauth pages -->
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
@@ -36,7 +38,8 @@
         integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
+    {% block extra_head %}
+    {% endblock extra_head %}
 </head>
 <title>LJ Hub</title>
 <!-- Credit CI I think therefore I blog walkthrough / M Briscoe -->
@@ -87,6 +90,8 @@
         </div>
     </nav>
 
+
+    {% block messages %}
     <!-- Display Django Messages -->
     <div class="container">
         <div class="row">
@@ -100,6 +105,7 @@
             </div>
         </div>
     </div>
+    {% endblock messages %}
 
 
     <!-- User logged in status -->

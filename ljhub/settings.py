@@ -37,22 +37,25 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin', # Admin panel
-    'django.contrib.auth', # Authentication system
-    'django.contrib.contenttypes', # Content types framework
-    'django.contrib.sessions', # Session management
-    'django.contrib.messages', # Messaging framework
-    'django.contrib.staticfiles', # Statics; should be before apps that manage static files
-    'django.contrib.sites', # Can go anywhere. # Required for managing multiple sites and for django-allauth integration
+    'django.contrib.admin',  # Admin panel
+    'django.contrib.auth',  # Authentication system
+    'django.contrib.contenttypes',  # Content types framework
+    'django.contrib.sessions',  # Session management
+    'django.contrib.messages',  # Messaging framework
+    # Statics; should be before apps that manage static files
+    'django.contrib.staticfiles',
+    # Can go anywhere. # Required for managing multiple sites and for django-allauth integration
+    'django.contrib.sites',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'cloudinary_storage', # This goes after django and allauth files as it overrides the default static file storage
-    'cloudinary', # Image management. Should be after cloudinary_storage
+    # This goes after django and allauth files as it overrides the default static file storage
+    'cloudinary_storage',
+    'cloudinary',  # Image management. Should be after cloudinary_storage
     'crispy_forms',
     'crispy_bootstrap5',
-    'django_summernote', # Rich text editor for admin
-    'blog', # My custom apps come after django then third-party apps
+    'django_summernote',  # Rich text editor for admin
+    'blog',  # My custom apps come after django then third-party apps
     'notes',
     'products',
     'user_profile',
@@ -62,7 +65,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKs = 'bootstrap5'
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 # Site framework ID - required for django.contrib.sites
-SITE_ID = 1 # So Django can handle multiple sites from one database
+SITE_ID = 1  # So Django can handle multiple sites from one database
 LOGIN_REDIRECT_URL = '/'  # returns user to home page after logging in
 LOGOUT_REDIRECT_URL = '/'  # returns user to home page after logging out
 ACCOUNT_SIGNUP_REDIRECT_URL = '/'  # Unless redirected with Next, go to blog list
@@ -76,7 +79,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-    'allauth.account.middleware.AccountMiddleware', # Adds additional functionality to the projects account user authentication
+    # Adds additional functionality to the projects account user authentication
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'ljhub.urls'
@@ -100,8 +104,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ljhub.wsgi.application'
 
 
-
-
 DATABASES = {
     'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
@@ -110,7 +112,6 @@ CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net/",
     "https://*.herokuapp.com"
 ]
-
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -124,11 +125,25 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': (
+            'django.contrib.auth.password_validation.NumericPasswordValidator'),
     },
 ]
 
-ACCOUNT_EMAIL_VERIFICATION = 'none' # Not using email verification in this project.
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_USERNAME_REQUIRED = True
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.your-email-provider.com'
+EMAIL_PORT = 587  # or 465 depending on your provider
+EMAIL_USE_TLS = True  # or False if using SSL
+# EMAIL_HOST_USER = 'your-email@example.com'
+# EMAIL_HOST_PASSWORD = 'your-password'
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
