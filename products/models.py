@@ -33,7 +33,7 @@ class Product(models.Model):
     publish_date = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        ordering = ['publish_date']
+        ordering = ['-publish_date']
 
     def save(self, *args, **kwargs):
         if not self.slug:  # Check if slug is not set

@@ -21,7 +21,7 @@ def blog_post(request, slug):
     **Context**
     ``post``
     An instance of :model:`blog.Post`.
-    
+
     **Template**
     :template:`blog/blog_list.html`
     """
@@ -49,10 +49,9 @@ def blog_post(request, slug):
                 request, messages.SUCCESS,
                 'Comment submitted and awaiting approval'
             )
-        
 
     comment_form = CommentForm()
-    print("about to render template") # Debugging
+    print("about to render template")  # Debugging
     return render(
         request,
         'blog/blog_post.html',
@@ -73,7 +72,6 @@ def comment_edit(request, slug, comment_id):
         post = get_object_or_404(Post, status=1, slug=slug)
         comment = get_object_or_404(Comment, pk=comment_id)
         comment_form = CommentForm(data=request.POST, instance=comment)
-        
 
         if comment_form.is_valid() and comment.commenter == request.user:
             comment = comment_form.save(commit=False)
@@ -81,11 +79,11 @@ def comment_edit(request, slug, comment_id):
             # updated comment as new comment so need to link it to the post
             comment.status = 0
             comment.save()
-            messages.add_message(request, messages.SUCCESS, "Comment updated and awaiting approval!")
+            messages.add_message(request, messages.SUCCESS,
+                                 "Comment updated and awaiting approval!")
         else:
             messages.add_message(request, messages.ERROR, "Error updating!")
-                
-                
+
     return HttpResponseRedirect(reverse("blog_post", args=[slug]))
 
 
@@ -95,7 +93,7 @@ def comment_delete(request, slug, comment_id):
 
     post = get_object_or_404(queryset, slug=slug)
     comment = get_object_or_404(Comment, pk=comment_id)
-    
+
     if comment.commenter == request.user:
         comment.delete()
         messages.add_message(request, messages.SUCCESS, "Comment deleted!")
@@ -105,4 +103,3 @@ def comment_delete(request, slug, comment_id):
         )
 
     return HttpResponseRedirect(reverse("blog_post", args=[slug]))
-    

@@ -31,7 +31,7 @@ def login_or_signup(request):
 
 def product_list(request):
     # Fetch all products
-    products = Product.objects.all().order_by()
+    products = Product.objects.all().order_by('-publish_date')
     # Initialize the paginator, 6 products per page
     paginator = Paginator(products, 6)  # Show 6 products per page
     page_number = request.GET.get('page')

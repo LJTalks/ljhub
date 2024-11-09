@@ -26,11 +26,11 @@ urlpatterns = [
     path('products/', include('products.urls')),  # Products app
     path('notes', include('notes.urls', namespace='notes')),  # Notes app
     path('summernote/', include('django_summernote.urls')),
-    
+
     # Custom login_or_signup page before slug or catch all's
     # Directly route login_or_signup
     path('login_or_signup/', views.login_or_signup, name='login_or_signup'),
-    
+
     # Home page points to blog app for now
     path('', include('blog.urls'), name='blog-urls'),
 ]

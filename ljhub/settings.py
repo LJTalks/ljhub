@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'django_summernote',  # Rich text editor for admin
     'blog',  # My custom apps come after django then third-party apps
+    'ljhub',
     'notes',
     'products',
     'user_profile',
@@ -96,6 +97,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ljhub.context_processors.support_email'
             ],
         },
     },
@@ -134,15 +136,17 @@ ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = True
+# ACCOUNT_TEMPLATE_EXTENSION
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Dev
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Prod
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Dev
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  # Prod
 EMAIL_HOST = 'mail.privateemail.com'
 EMAIL_PORT = 465  # or 587 depending on your provider
-EMAIL_USE_TLS = True  # or False if using SSL
+EMAIL_USE_SSL = True  # or False if using SSL
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER')
+SUPPORT_EMAIL = os.getenv('SUPPORT_EMAIL')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
